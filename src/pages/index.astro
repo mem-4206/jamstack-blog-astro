@@ -1,11 +1,60 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import Bento from '../components/Bento.astro';
+import ButtonLink from '../components/ButtonLink.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import TwoCol from '../layouts/TwoColLayout.astro';
 ---
 
-<Layout>
-    <Welcome />
+<Layout title="Jamstack Portalsite">
+    <main>
+        <TwoCol>
+            <div class="flex-col">
+                <Bento bgColor="#279E54">
+                    <div class="text-small font-comico text-white">Hello Members!</div>
+                    <h2 class="text-large text-white">About Jamstack Study Group</h2>
+                    <p class="text-white">
+                        fuga近年注目されているJamstackと、広く普及し始めているヘッドレスCMSに取り組むエンジニアを増やすことが必要だと感じ、本ギルドが開設されました。
+                        <br />
+                        Jamstackな人材の育成や技術研究、社内外への普及活動に取り組んでいます。
+                    </p>
+                </Bento>
+                <Bento bgColor="#7498FF">
+                    <h3 class="text-white text-medium">Application Form</h3>
+                    <p class="text-white">
+                        Jamstackに関するハンズオンや勉強会、時にはブログ執筆をして広報活動を行なっています。<br />
+                        研究員が自主的に活動内容を決めて行っているので裁量が大きいのもポイントです！<br />
+                        「まずは話を聞いてみたい」「活動を見学したい」からOK！
+                        <br />
+                    </p>
+                    <ButtonLink text="問い合わせはこちらから" link="" bgColor="#fff" textColor="#7498FF" />
+                </Bento>
+            </div>
+            <Bento>
+                <div class="info">
+                    <h2 class="text-red">News</h2>
+                    <div>
+                        <div></div>
+                    </div>
+                </div>
+            </Bento>
+        </TwoCol>
+    </main>
 </Layout>
+
+<style>
+    main {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+    .info {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+    }
+
+    .iflame {
+        height: 30rem;
+    }
+</style>
