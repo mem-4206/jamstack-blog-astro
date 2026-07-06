@@ -1,0 +1,34 @@
+---
+interface Props {
+    text: string;
+    link: string;
+    textColor: string;
+    bgColor: string;
+}
+
+const { text, link, textColor, bgColor } = Astro.props;
+---
+
+<a href={link} target="_blank" rel="noopener noreferrer"><div>{text}</div><div>→</div></a>
+
+<style define:vars={{ textColor, bgColor }}>
+    a {
+        color: var(--textColor);
+        background-color: var(--bgColor);
+        transition-duration: 0.3s;
+        font-weight: 600;
+        font-size: 1.25rem;
+        line-height: 1.75rem;
+        padding: 0.5rem 2rem;
+        border-radius: 0.75rem;
+        height: 4rem;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-decoration: inherit;
+    }
+    a:hover {
+        color: white;
+        background-color: black;
+    }
+</style>

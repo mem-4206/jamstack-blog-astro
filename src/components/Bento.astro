@@ -1,0 +1,21 @@
+---
+interface Props {
+    bgColor?: string;
+    className?: string;
+}
+
+const { bgColor = '#E5E7EB', className } = Astro.props;
+---
+
+<div class={className}>
+    <slot />
+</div>
+
+<style define:vars={{ bgColor }}>
+    div {
+        background-color: var(--bgColor);
+        padding: 2rem;
+        border-radius: 1.5rem;
+        min-width: 100%;
+    }
+</style>
