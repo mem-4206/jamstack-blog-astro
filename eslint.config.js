@@ -1,6 +1,6 @@
 import eslint from '@eslint/js';
 import tseslint from 'typescript-eslint';
-import * as astroEslintParser from "astro-eslint-parser"
+import * as astroEslintParser from 'astro-eslint-parser';
 import eslintPluginAstro from 'eslint-plugin-astro';
 import globals from 'globals';
 import configPrettier from 'eslint-config-prettier';
@@ -8,7 +8,8 @@ import configPrettier from 'eslint-config-prettier';
 export default [
     {
         languageOptions: {
-            globals: { // グローバル変数を設定
+            globals: {
+                // グローバル変数を設定
                 ...globals.browser,
                 ...globals.node
             }
@@ -27,7 +28,8 @@ export default [
                 extraFileExtensions: ['.astro']
             }
         },
-        rules: { // 手動で好みの設定を追加
+        rules: {
+            // 手動で好みの設定を追加
             'prefer-const': 2, // 再代入がない限り const を強制
             'no-console': 'off', // console.log();OK
             'no-var': 2, // var禁止
