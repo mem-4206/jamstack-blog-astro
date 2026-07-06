@@ -9,12 +9,17 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "format": "prettier --write **/*.{css,scss,mjs,cjs,js,ts,astro,json} --ignore-path .prettierignore --no-error-on-unmatched-pattern"
   },
   "dependencies": {
     "astro": "^7.0.6"
   },
   "volta": {
     "node": "20.15.0"
+  },
+  "devDependencies": {
+    "prettier": "^3.9.4",
+    "prettier-plugin-astro": "^0.14.1"
   }
 }
