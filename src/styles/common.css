@@ -1,0 +1,62 @@
+h1,
+h2,
+h3 {
+    font-family: Comico;
+}
+
+p {
+    padding: 1rem 0;
+}
+
+/* Text Color */
+.text-white {
+    color: #fff;
+}
+
+.text-red {
+    color: #f12607;
+}
+
+.text-small {
+    font-size: 1.875rem;
+}
+
+.text-medium {
+    font-size: 2.25rem;
+}
+
+h3,
+.text-large {
+    font-size: 3rem;
+}
+
+h2,
+.text-huge {
+    font-size: 3.75rem;
+}
+
+/* Text Font */
+.font-comico {
+    font-family: Comico;
+}
+
+/* Flex */
+.flex-col {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.flex-row {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+@media (max-width: 1024px) {
+    .col-span-full {
+        grid-column-start: 1;
+        grid-column-end: -1;
+    }
+}
