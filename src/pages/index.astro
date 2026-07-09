@@ -5,8 +5,8 @@ import Layout from '../layouts/Layout.astro';
 import TwoCol from '../layouts/TwoColLayout.astro';
 
 //microCMS呼び出し
-import { getBlog } from '../library/microcms';
-const response = await getBlog({ fields: ['id', 'title', 'content'] });
+import { getBlogs } from '../library/microcms';
+const response = await getBlogs({ fields: ['id', 'title', 'content'] });
 console.log(response); // ログでお知らせが取得できていることを確認
 ---
 
