@@ -20,6 +20,9 @@ const blog = await getBlogDetail(blogId as string);
 <Layout title="My first blog with Astro">
     <main>
         <h1 class="title">{blog.title}</h1>
+        <div class="main-visual image-conainer" style="background-color: gray; aspect-ratio: 1200/630">
+            <img src={blog.mainVisual.url} alt="" />
+        </div>
         <p class="publishedAt">公開日時：{blog.publishedAt}</p>
         <div class="post" set:html={blog.content} />
     </main>
