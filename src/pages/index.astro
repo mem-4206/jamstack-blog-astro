@@ -5,8 +5,8 @@ import Layout from '../layouts/Layout.astro';
 import TwoCol from '../layouts/TwoColLayout.astro';
 
 //microCMS呼び出し
-import { getNews } from '../library/microcms';
-const response = await getNews({ fields: ['id', 'title', 'body'] });
+import { getBlog } from '../library/microcms';
+const response = await getBlog({ fields: ['id', 'title', 'content'] });
 console.log(response); // ログでお知らせが取得できていることを確認
 ---
 
@@ -35,7 +35,7 @@ console.log(response); // ログでお知らせが取得できていることを
                 </Bento>
             </div>
             <Bento>
-                <h2 class="text-red">News</h2>
+                <h2 class="text-red">Blog</h2>
                 <div class="info">
                     <div class="flex-col justify-between">
                         {

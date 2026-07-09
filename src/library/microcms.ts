@@ -12,7 +12,16 @@ type News = {
     body: string;
 };
 
+type Blog = {
+    title: string;
+    body: string;
+};
+
 // お知らせ取得用関数
 export const getNews = async (queries?: MicroCMSQueries) => {
     return await client.getList<News>({ endpoint: 'news', queries }); // APIのエンドポイントとしてnewsを指定
+};
+
+export const getBlog = async (queries?: MicroCMSQueries) => {
+    return await client.getList<Blog>({ endpoint: 'blogs', queries }); // APIのエンドポイントとしてnewsを指定
 };
