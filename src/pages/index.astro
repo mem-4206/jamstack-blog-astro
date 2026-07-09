@@ -3,6 +3,11 @@ import Bento from '../components/Bento.astro';
 import ButtonLink from '../components/ButtonLink.astro';
 import Layout from '../layouts/Layout.astro';
 import TwoCol from '../layouts/TwoColLayout.astro';
+
+//microCMS呼び出し
+import { getNews } from '../library/microcms';
+const response = await getNews({ fields: ['id', 'title', 'body'] });
+console.log(response); // ログでお知らせが取得できていることを確認
 ---
 
 <Layout title="Jamstack Portalsite">
@@ -30,10 +35,14 @@ import TwoCol from '../layouts/TwoColLayout.astro';
                 </Bento>
             </div>
             <Bento>
+                <h2 class="text-red">News</h2>
                 <div class="info">
-                    <h2 class="text-red">News</h2>
-                    <div>
-                        <div></div>
+                    <div class="flex-col justify-between">
+                        {
+                            response.contents.map((content) => (
+                                <ButtonLink text={content.title} link={content.id} textColor="#f12607" bgColor="#FFF" />
+                            ))
+                        }
                     </div>
                 </div>
             </Bento>
@@ -49,8 +58,7 @@ import TwoCol from '../layouts/TwoColLayout.astro';
     }
     .info {
         display: flex;
-        justify-content: center;
-        align-items: center;
+        flex-direction: column;
         height: 100%;
     }
 
