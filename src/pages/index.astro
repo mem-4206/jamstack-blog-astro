@@ -1,6 +1,6 @@
 ---
-// import Bento from '../components/Bento.astro';
-import ButtonLink from '../components/ButtonLink.astro';
+// import ButtonLink from '../components/ButtonLink.astro';
+import ArticleCard from '../components/ArticleCard.astro';
 import Layout from '../layouts/Layout.astro';
 // import TwoCol from '../layouts/TwoColLayout.astro';
 
@@ -12,39 +12,13 @@ console.log(response); // ログでお知らせが取得できていることを
 
 <Layout title="Jamstack Portalsite">
     <main>
-        <!-- <TwoCol> -->
-        <!-- <div class="flex-col">
-                <Bento bgColor="#279E54">
-                    <div class="text-small font-comico text-white">Hello Members!</div>
-                    <h2 class="text-large text-white">About Jamstack Study Group</h2>
-                    <p class="text-white">
-                        fuga近年注目されているJamstackと、広く普及し始めているヘッドレスCMSに取り組むエンジニアを増やすことが必要だと感じ、本ギルドが開設されました。
-                        <br />
-                        Jamstackな人材の育成や技術研究、社内外への普及活動に取り組んでいます。
-                    </p>
-                </Bento>
-                <Bento bgColor="#7498FF">
-                    <h3 class="text-white text-medium">Application Form</h3>
-                    <p class="text-white">
-                        Jamstackに関するハンズオンや勉強会、時にはブログ執筆をして広報活動を行なっています。<br />
-                        研究員が自主的に活動内容を決めて行っているので裁量が大きいのもポイントです！<br />
-                        「まずは話を聞いてみたい」「活動を見学したい」からOK！
-                        <br />
-                    </p>
-                    <ButtonLink text="問い合わせはこちらから" link="" bgColor="#fff" textColor="#7498FF" />
-                </Bento>
-            </div> -->
-        <!-- <Bento> -->
-        <h2>Blog</h2>
-        <div class="info">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
                 response.contents.map((content) => (
-                    <ButtonLink text={content.title} link={content.id} textColor="#f12607" bgColor="#FFF" />
+                    <ArticleCard text={content.title} link={content.id} imgUrl={content.mainVisual?.url} />
                 ))
             }
         </div>
-        <!-- </Bento> -->
-        <!-- </TwoCol> -->
     </main>
 </Layout>
 
