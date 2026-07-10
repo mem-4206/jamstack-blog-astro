@@ -19,6 +19,7 @@ export type Blog = {
     mainVisual: {
         url: string;
     };
+    category: string;
 } & MicroCMSListContent;
 
 // お知らせ取得用関数
