@@ -23,6 +23,7 @@
         "node": "20.15.0"
     },
     "devDependencies": {
+        "@biomejs/biome": "2.5.3",
         "@eslint/js": "^10.0.1",
         "@typescript-eslint/parser": "^8.62.1",
         "astro-eslint-parser": "^2.1.0",
