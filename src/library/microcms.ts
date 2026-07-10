@@ -16,6 +16,9 @@ const client = createClient({
 export type Blog = {
     title: string;
     content: string;
+    mainVisual: {
+        url: string;
+    };
 } & MicroCMSListContent;
 
 // お知らせ取得用関数

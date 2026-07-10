@@ -8,6 +8,11 @@ p {
     padding: 1rem 0;
 }
 
+img {
+    max-width: 100%;
+    height: auto;
+}
+
 /* Text Color */
 .text-white {
     color: #fff;
@@ -41,7 +46,7 @@ h2,
 }
 
 /* Flex */
-.flex-col {
+/* .flex-col {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -59,4 +64,4 @@ h2,
         grid-column-start: 1;
         grid-column-end: -1;
     }
-}
+} */
