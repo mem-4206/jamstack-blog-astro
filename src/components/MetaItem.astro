@@ -1,0 +1,13 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+    iconName: string;
+    text: string;
+}
+
+const { iconName, text } = Astro.props;
+---
+
+<span class="flex items-center gap-1.5 text-gray-700 hover:text-bule-600 transition-colors">
+    <Icon name={iconName} class="w-5 h-5" />{text}</span>
