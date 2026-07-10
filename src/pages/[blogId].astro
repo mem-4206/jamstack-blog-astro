@@ -51,7 +51,7 @@ const updatedAtDate = updatedAt.toLocaleDateString("ja-JP", {
 ---
 
 <Layout title="My first blog with Astro">
-    <main>
+    <main class="mx-auto max-w-4xl px-4 py-8">
         <h1 class="text-3xl my-8">{blog.title}</h1>
         <img src={blog.mainVisual.url} alt="" />
         <div class="bg-gray-50 rounded-xl p-5 text-gray-700 text-sm my-8 flex flex-col gap-2">
@@ -64,21 +64,26 @@ const updatedAtDate = updatedAt.toLocaleDateString("ja-JP", {
                 </div>
             </div>
         </div>
-        <div class="post" set:html={blog.content} />
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {
-                relatedPosts.map((content) => (
-                    <ArticleCard text={content.title} link={content.id} imgUrl={content.mainVisual?.url} />
-                ))
-            }
-        </div>
+        <div class="my-16" set:html={blog.content} />
     </main>
+    <footer class="bg-gray-50 py-16 px-4">
+        <aside class="mx-auto max-w-4xl">
+            <h2 class="text-2xl mb-4"><MetaItem iconName="material-symbols:folder" text={blog.category?.name} /></h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                {
+                    relatedPosts.map((content) => (
+                        <ArticleCard text={content.title} link={content.id} imgUrl={content.mainVisual?.url} />
+                    ))
+                }
+            </div>
+        </aside>
+    </footer>
 </Layout>
-
+<!-- 
 <style>
     main {
         margin: auto;
         padding: 1em;
         max-width: 60ch;
     }
-</style>
+</style> -->
