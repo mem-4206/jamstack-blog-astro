@@ -21,6 +21,8 @@ export type Blog = {
     };
     category: string;
     tags: string;
+    publishedAt: Date;
+    updatedAt: Date;
 } & MicroCMSListContent;
 
 // お知らせ取得用関数
