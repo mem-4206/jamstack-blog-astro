@@ -20,6 +20,7 @@ export type Blog = {
         url: string;
     };
     category: string;
+    tags: string;
 } & MicroCMSListContent;
 
 // お知らせ取得用関数
