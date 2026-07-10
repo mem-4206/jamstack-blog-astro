@@ -21,32 +21,30 @@ console.log(blog);
 // Dateデータの整形
 const publishedAt = new Date(blog.publishedAt);
 const updatedAt = new Date(blog.updatedAt);
-const publishedAtDate = publishedAt.toLocaleDateString('ja-JP',{
+const publishedAtDate = publishedAt.toLocaleDateString('ja-JP', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit'
 });
-const updatedAtDate = updatedAt.toLocaleDateString('ja-JP',{
+const updatedAtDate = updatedAt.toLocaleDateString('ja-JP', {
     year: 'numeric',
     month: '2-digit',
     day: '2-digit'
-})
+});
 ---
 
 <Layout title="My first blog with Astro">
     <main>
-        <h1 class="title">{blog.title}</h1>
+        <h1 class="text-3xl my-8">{blog.title}</h1>
         <img src={blog.mainVisual.url} alt="" />
-        <MetaItem iconName="material-symbols:folder" text={blog.category}></MetaItem>
-        {
-            blog.tags && (
-                <MetaItem iconName="mdi:tag" text={blog.tags}></MetaItem>
-            )
-        }
-        <div class="flex items-center gap-4 text-sm text-gray-600">
-            <MetaItem iconName="mdi:calendar" text={publishedAtDate}></MetaItem>
-            <div class="flex items-center gap-1">
-                （<MetaItem iconName="material-symbols:update" text={updatedAtDate}></MetaItem>）
+        <div class="bg-gray-50 rounded-xl p-5 text-gray-700 text-sm my-8 flex flex-col gap-2">
+            <MetaItem iconName="material-symbols:folder" text={blog.category} />
+            {blog.tags && <MetaItem iconName="mdi:tag" text={blog.tags} />}
+            <div class="flex items-center gap-2 text-sm text-gray-600">
+                <MetaItem iconName="mdi:calendar" text={publishedAtDate} />
+                <div class="flex items-center">
+                    （<MetaItem iconName="material-symbols:update" text={updatedAtDate} />）
+                </div>
             </div>
         </div>
         <div class="post" set:html={blog.content} />
