@@ -46,7 +46,7 @@ h2,
 }
 
 /* Flex */
-.flex-col {
+/* .flex-col {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
@@ -64,4 +64,4 @@ h2,
         grid-column-start: 1;
         grid-column-end: -1;
     }
-}
+} */

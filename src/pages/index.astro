@@ -1,8 +1,8 @@
 ---
-import Bento from '../components/Bento.astro';
+// import Bento from '../components/Bento.astro';
 import ButtonLink from '../components/ButtonLink.astro';
 import Layout from '../layouts/Layout.astro';
-import TwoCol from '../layouts/TwoColLayout.astro';
+// import TwoCol from '../layouts/TwoColLayout.astro';
 
 //microCMS呼び出し
 import { getBlogs } from '../library/microcms';
@@ -12,8 +12,8 @@ console.log(response); // ログでお知らせが取得できていることを
 
 <Layout title="Jamstack Portalsite">
     <main>
-        <TwoCol>
-            <div class="flex-col">
+        <!-- <TwoCol> -->
+        <!-- <div class="flex-col">
                 <Bento bgColor="#279E54">
                     <div class="text-small font-comico text-white">Hello Members!</div>
                     <h2 class="text-large text-white">About Jamstack Study Group</h2>
@@ -33,20 +33,18 @@ console.log(response); // ログでお知らせが取得できていることを
                     </p>
                     <ButtonLink text="問い合わせはこちらから" link="" bgColor="#fff" textColor="#7498FF" />
                 </Bento>
-            </div>
-            <Bento>
-                <h2 class="text-red">Blog</h2>
-                <div class="info">
-                    <div class="flex-col justify-between">
-                        {
-                            response.contents.map((content) => (
-                                <ButtonLink text={content.title} link={content.id} textColor="#f12607" bgColor="#FFF" />
-                            ))
-                        }
-                    </div>
-                </div>
-            </Bento>
-        </TwoCol>
+            </div> -->
+        <!-- <Bento> -->
+        <h2>Blog</h2>
+        <div class="info">
+            {
+                response.contents.map((content) => (
+                    <ButtonLink text={content.title} link={content.id} textColor="#f12607" bgColor="#FFF" />
+                ))
+            }
+        </div>
+        <!-- </Bento> -->
+        <!-- </TwoCol> -->
     </main>
 </Layout>
 
@@ -56,11 +54,11 @@ console.log(response); // ログでお知らせが取得できていることを
         flex-direction: column;
         gap: 0.5rem;
     }
-    .info {
+    /* .info {
         display: flex;
         flex-direction: column;
         height: 100%;
-    }
+    } */
 
     .iflame {
         height: 30rem;
