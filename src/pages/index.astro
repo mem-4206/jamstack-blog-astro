@@ -27,6 +27,9 @@ const filteredPosts = selectedTag
               .includes(selectedTag)
       )
     : posts;
+
+console.log('検索されたタグ: ', selectedTag);
+console.log('実際の記事のタグ:', posts[0]?.tags);
 ---
 
 <Layout title="Jamstack Portalsite">
@@ -37,8 +40,10 @@ const filteredPosts = selectedTag
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
-                response.contents.map((content) => (
-                    <ArticleCard text={content.title} link={content.id} imgUrl={content.mainVisual?.url} />
+                filteredPosts.map((post) => (
+                    <article>
+                        <ArticleCard text={post.title} link={post.id} imgUrl={post.mainVisual?.url} />
+                    </article>
                 ))
             }
         </div>
