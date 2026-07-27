@@ -1,17 +1,40 @@
 ---
 // import ButtonLink from '../components/ButtonLink.astro';
+// import type { ACTION_ERROR_CODES } from 'astro:actions';
+// import { postcss } from 'tailwindcss';
 import ArticleCard from '../components/ArticleCard.astro';
 import Layout from '../layouts/Layout.astro';
 // import TwoCol from '../layouts/TwoColLayout.astro';
 
 //microCMS呼び出し
 import { getBlogs } from '../library/microcms';
-const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual'] });
-console.log(response); // ログでお知らせが取得できていることを確認
+const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual', 'tags'] });
+const posts = response.contents;
+
+console.log('▼ response.contents ▼');
+console.log(response.contents);
+
+const tags = [...new Set(posts.flatMap((post) => (post.tags ? post.tags.split(',').map((tag) => tag.trim()) : [])))];
+console.log(tags);
+
+// URLから選択されているタグを取得
+const selectedTag = Astro.url.searchParams.get('tag');
+const filteredPosts = selectedTag
+    ? posts.filter((post) =>
+          post.tags
+              ?.split(',')
+              .map((tag) => tag.trim())
+              .includes(selectedTag)
+      )
+    : posts;
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
+        <div>
+            <a href="/">すべて</a>
+            {tags.map((tag) => <a href={`/?tag=${tag}`}>{tag}</a>)}
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
                 response.contents.map((content) => (
