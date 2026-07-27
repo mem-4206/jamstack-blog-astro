@@ -8,6 +8,6 @@ import sitemap from '@astrojs/sitemap';
 
 // https://astro.build/config
 export default defineConfig({
-    site: 'https://jamstack-blog-astro.pages.dev/',
+    site: 'https://jamstack-blog-astro.pages.dev',
     integrations: [tailwind(), icon(), sitemap()]
 });
