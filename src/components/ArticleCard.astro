@@ -1,5 +1,6 @@
 ---
 import TagButton from '../components/TagButton.astro';
+import MetaItem from '../components/MetaItem.astro';
 
 interface Props {
     article: {
@@ -23,15 +24,20 @@ if (article.tags) {
     const splitTags = article.tags.split(',').map((tag) => tag.trim());
     tagsArray.push(...splitTags);
 }
+console.log(tagsArray);
 ---
 
-<article data-tags={article.tags}>
-    <a href={`/${article.id}`}>
-        <img src={article.mainVisual.url} alt="" />
-        <div class="my-4">{article.title}</div>
-        <div>{article.category.name}</div>
-        <div class="flex gap-4">
-            {tagsArray.map((tagitem) => <TagButton link={`/?tag=${tagitem}`} text={tagitem} />)}
-        </div>
-    </a>
+<article data-tags={article.tags} class="p-4 flex flex-col md:flex-row">
+    <a href={`/${article.id}`}
+        ><img src={article.mainVisual.url} alt="" class="aspect-video w-full object-cover md:w-2/5 shrink-0" /></a
+    >
+    <a href={`/${article.id}`}><h2 class="text-lg text-slate-900 line-clamp-2">{article.title}</h2></a>
+    <MetaItem iconName="material-symbols:folder">{article.category?.name}</MetaItem>
+		{
+			tagsArray.length > 0 && 
+			<MetaItem iconName="mdi:tag">
+				{tagsArray.map((tagitem) => <a href={`/?tag=${tagitem}`}>{tagitem}</a>)}
+			</MetaItem>
+		}
+    </MetaItem>
 </article>
