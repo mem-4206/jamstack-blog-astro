@@ -21,23 +21,16 @@ data.forEach((article) => {
 });
 const uniqueTagsSet = new Set(rawTags);
 const uniqueTags = [...uniqueTagsSet];
-console.log("取得されたタグ▼")
+console.log('取得されたタグ▼');
 console.log(uniqueTags);
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
-        <TagButton link='/' text='すべて' ?></TagButton>
-        {
-            uniqueTags.map((tagitem) => (
-                <TagButton
-                    link={`/?tag=${tagitem}`}
-                    text={tagitem}
-                />
-
-            ))
-        }
-        <!-- <TagButton link={} -->
+        <div class="flex gap-4">
+            <TagButton link="/" text="すべて" ? />
+            {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem}`} text={tagitem} />)}
+        </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
                 response.contents.map((content) => (
