@@ -49,4 +49,16 @@ const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual
     const params = new URLSearchParams(window.location.search);
     const selectedTag = params.get('tag');
     console.log('選択されたタグ: ' + selectedTag);
+
+    // 全カード取得
+    const allArticles = document.querySelectorAll('article');
+    console.log(allArticles);
+
+    if (selectedTag) {
+        allArticles.forEach((article) => {
+            var cardTags = article.getAttribute('data-tags');
+            article.classList.toggle('hidden', !cardTags?.includes(selectedTag));
+            console.log(cardTags);
+        });
+    }
 </script>
