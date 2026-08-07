@@ -7,7 +7,7 @@ import Layout from '../layouts/Layout.astro';
 //microCMS呼び出し
 import { getBlogs } from '../library/microcms';
 const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual', 'tags'] });
-console.log(response); // ログでお知らせが取得できていることを確認
+// console.log(response);
 ---
 
 <Layout title="Jamstack Portalsite">
@@ -15,7 +15,12 @@ console.log(response); // ログでお知らせが取得できていることを
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
                 response.contents.map((content) => (
-                    <ArticleCard text={content.title} link={content.id} imgUrl={content.mainVisual?.url} tags={content.tags} />
+                    <ArticleCard
+                        text={content.title}
+                        link={content.id}
+                        imgUrl={content.mainVisual?.url}
+                        tags={content.tags}
+                    />
                 ))
             }
         </div>
@@ -38,3 +43,10 @@ console.log(response); // ログでお知らせが取得できていることを
         height: 30rem;
     }
 </style>
+
+<script>
+    // URLパラメータの読み込み
+    const params = new URLSearchParams(window.location.search);
+    const selectedTag = params.get('tag');
+    console.log('選択されたタグ: ' + selectedTag);
+</script>
