@@ -3,12 +3,13 @@ interface Props {
 	text: string;
 	link: string;
 	imgUrl: string;
+	tags: string;
 }
 
-const { text, link, imgUrl } = Astro.props;
+const { text, link, imgUrl, tags } = Astro.props;
 ---
 
-<a href={link}>
+<a href={link} data-tags={tags}>
     <img src={imgUrl} alt="" />
     <div class="my-4">{text}</div>
 </a>
