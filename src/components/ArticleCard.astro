@@ -1,17 +1,18 @@
 ---
+import type { Blog } from '../library/microcms';
+
 interface Props {
-    text: string;
-    link: string;
-    imgUrl: string;
-    tags: string;
+    article: Blog;
 }
 
-const { text, link, imgUrl, tags } = Astro.props;
+const { article } = Astro.props;
+
+const tagsString = article.tags?.map((tag) => tag.name).join(',') ?? '';
 ---
 
-<article data-tags={tags}>
-    <a href={link}>
-        <img src={imgUrl} alt="" />
-        <div class="my-4">{text}</div>
+<article data-tags={tagsString}>
+    <a href={`/${article.id}`}>
+        <img src={article.mainVisual.url} alt="" />
+        <div class="my-4">{article.title}</div>
     </a>
 </article>
