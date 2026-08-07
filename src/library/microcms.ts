@@ -23,7 +23,10 @@ export type Blog = {
 		id: string;
 		name: string;
 	};
-	tags: string;
+	tags: {
+		id: string;
+		name: string;
+	}[];
 	publishedAt: Date;
 	updatedAt: Date;
 } & MicroCMSListContent;

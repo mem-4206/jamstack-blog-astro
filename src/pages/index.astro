@@ -9,39 +9,31 @@ import Layout from '../layouts/Layout.astro';
 import { getBlogs } from '../library/microcms';
 const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual', 'tags'] });
 const data = response.contents;
-// console.log(data);
+console.log(data);
 
 // タグ一覧を作成
 let rawTags: string[] = [];
 data.forEach((article) => {
     if (article.tags) {
-        const splitTags = article.tags.split(',').map((tag) => tag.trim());
-        rawTags.push(...splitTags);
+        const tagArray = article.tags.map((tag) => tag.name);
+        rawTags.push(...tagArray);
     }
 });
 const uniqueTagsSet = new Set(rawTags);
 const uniqueTags = [...uniqueTagsSet];
 console.log('取得されたタグ▼');
 console.log(uniqueTags);
+console.log('tagsの中身▼', data[0]?.tags);
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
-        <div class="flex gap-4">
-            <TagButton link="/" text="すべて" ? />
+        <nav class="flex gap-4">
+            <TagButton link="/" text="すべて" />
             {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem}`} text={tagitem} />)}
-        </div>
+        </nav>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {
-                response.contents.map((content) => (
-                    <ArticleCard
-                        text={content.title}
-                        link={`/${content.id}`}
-                        imgUrl={content.mainVisual?.url}
-                        tags={content.tags}
-                    />
-                ))
-            }
+            {response.contents.map((content) => (<ArticleCard article={content} />))}
         </div>
     </main>
 </Layout>
