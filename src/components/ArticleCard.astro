@@ -1,14 +1,17 @@
 ---
 interface Props {
-	text: string;
-	link: string;
-	imgUrl: string;
+    text: string;
+    link: string;
+    imgUrl: string;
+    tags: string;
 }
 
-const { text, link, imgUrl } = Astro.props;
+const { text, link, imgUrl, tags } = Astro.props;
 ---
 
-<a href={link}>
-    <img src={imgUrl} alt="" />
-    <div class="my-4">{text}</div>
-</a>
+<article data-tags={tags}>
+    <a href={link}>
+        <img src={imgUrl} alt="" />
+        <div class="my-4">{text}</div>
+    </a>
+</article>
