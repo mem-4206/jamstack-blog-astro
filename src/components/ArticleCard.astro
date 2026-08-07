@@ -1,17 +1,37 @@
 ---
+import TagButton from '../components/TagButton.astro';
+
 interface Props {
-    text: string;
-    link: string;
-    imgUrl: string;
-    tags: string;
+    article: {
+        id: string;
+        mainVisual: {
+            url: string;
+        };
+        title: string;
+        category: {
+            name: string;
+        };
+        tags?: string;
+    };
 }
 
-const { text, link, imgUrl, tags } = Astro.props;
+const { article } = Astro.props;
+
+let tagsArray: string[] = [];
+
+if (article.tags) {
+    const splitTags = article.tags.split(',').map((tag) => tag.trim());
+    tagsArray.push(...splitTags);
+}
 ---
 
-<article data-tags={tags}>
-    <a href={link}>
-        <img src={imgUrl} alt="" />
-        <div class="my-4">{text}</div>
+<article data-tags={article.tags}>
+    <a href={`/${article.id}`}>
+        <img src={article.mainVisual.url} alt="" />
+        <div class="my-4">{article.title}</div>
+        <div>{article.category.name}</div>
+        <div class="flex gap-4">
+            {tagsArray.map((tagitem) => <TagButton link={`/?tag=${tagitem}`} text={tagitem} />)}
+        </div>
     </a>
 </article>
