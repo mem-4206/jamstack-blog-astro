@@ -5,26 +5,29 @@ import MetaItem from '../components/MetaItem.astro';
 interface Props {
     article: {
         id: string;
-        mainVisual: {
-            url: string;
-        };
+        mainVisual: { url: string; };
         title: string;
-        category: {
-            name: string;
-        };
-        tags?: string;
+        category: { name: string; };
+        tags?: { id: string; name: string }[];
     };
 }
 
 const { article } = Astro.props;
 
-let tagsArray: string[] = [];
+// let tagsArray: string[] = [];
 
-if (article.tags) {
-    const splitTags = article.tags.split(',').map((tag) => tag.trim());
-    tagsArray.push(...splitTags);
-}
-console.log(tagsArray);
+// if (article.tags) {
+//     const splitTags = article.tags.split(',').map((tag) => tag.trim());
+//     tagsArray.push(...splitTags);
+// }
+// console.log(tagsArray);
+
+const tagsArray = article.tags ? article.tags.map((tag) => tag.name) : [];
+
+// if (blog.tags) {
+//     const splitTags = blog.tags.split(',').map((tag) => tag.trim());
+//     tagsArray.push(...splitTags);
+// }
 ---
 
 <article data-tags={article.tags} class="p-4 flex flex-col md:flex-row">
