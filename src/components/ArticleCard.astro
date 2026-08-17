@@ -15,14 +15,14 @@ interface Props {
 }
 
 const { article } = Astro.props;
-console.log('articleの中身:', article.publishedAt, article.updatedAt);
+// console.log('articleの中身:', article.publishedAt, article.updatedAt);
 
 // タグ配列をカンマ区切りの文字列に変換
-const tagsArray = article.tags ? article.tags.map((tag) => tag.name) : [];
-const tagsString = article.tags?.map((tag) => tag.name).join(',') || '';
+const tags = article.tags || [];
+const tagsString = tags?.map((tag) => tag.name).join(',') || '';
 
 // 日付の整形
-// 「2026/08/17」形式で返します（スラッシュをドットにしたい場合は最後に .replaceAll('/', '.') を付与）
+// スラッシュをドットにしたい場合は最後に .replaceAll('/', '.') を付与
 const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
     return new Date(dateStr).toLocaleDateString('ja-JP', {
@@ -43,10 +43,10 @@ const updatedAtFormatted = formatDate(article.updatedAt);
     <a href={`/${article.id}`}><h2 class="text-lg text-slate-900 line-clamp-2">{article.title}</h2></a>
     <MetaItem iconName="material-symbols:folder">{article.category?.name}</MetaItem>
     {
-        tagsArray.length > 0 && (
+        tags.length > 0 && (
             <MetaItem iconName="mdi:tag">
-                {tagsArray.map((tagitem) => (
-                    <a href={`/?tag=${tagitem}`}>{tagitem}</a>
+                {tags.map((tag) => (
+                    <a href={`/?tag=${tag.id}`}>{tag.name}</a>
                 ))}
             </MetaItem>
         )
