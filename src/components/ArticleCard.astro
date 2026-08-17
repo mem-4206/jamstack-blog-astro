@@ -13,24 +13,13 @@ interface Props {
 }
 
 const { article } = Astro.props;
-
-// let tagsArray: string[] = [];
-
-// if (article.tags) {
-//     const splitTags = article.tags.split(',').map((tag) => tag.trim());
-//     tagsArray.push(...splitTags);
-// }
-// console.log(tagsArray);
-
 const tagsArray = article.tags ? article.tags.map((tag) => tag.name) : [];
 
-// if (blog.tags) {
-//     const splitTags = blog.tags.split(',').map((tag) => tag.trim());
-//     tagsArray.push(...splitTags);
-// }
+// タグ配列をカンマ区切りの文字列に変換
+const tagsString = article.tags?.map((tag) => tag.name).join(',') || '';
 ---
 
-<article data-tags={article.tags} class="p-4 flex flex-col md:flex-row">
+<article data-tags={tagsString} class="p-4 flex flex-col md:flex-row">
     <a href={`/${article.id}`}
         ><img src={article.mainVisual.url} alt="" class="aspect-video w-full object-cover md:w-2/5 shrink-0" /></a
     >
