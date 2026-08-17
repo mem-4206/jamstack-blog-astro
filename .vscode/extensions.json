@@ -1,7 +1,7 @@
 {
     "recommendations": [
         "astro-build.astro-vscode", // Astro
-        "esbenp.prettier-vscode", // Prettier
+        // "esbenp.prettier-vscode", // Prettier
         "EditorConfig.EditorConfig", // EditorConfig
         "biomejs.biome"
     ],
