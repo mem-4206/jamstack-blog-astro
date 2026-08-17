@@ -1,8 +1,8 @@
 ---
-import Layout from '../layouts/Layout.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import MetaItem from '../components/MetaItem.astro';
-import { getBlogs, getBlogDetail, getRelatedPosts } from '../library/microcms';
+import Layout from '../layouts/Layout.astro';
+import { getBlogDetail, getBlogs } from '../library/microcms';
 
 // 詳細記事ページの全パスを取得
 export async function getStaticPaths() {
@@ -17,7 +17,14 @@ export async function getStaticPaths() {
 // 記事の詳細情報を取得
 const { blogId } = Astro.params;
 const blog = await getBlogDetail(blogId as string);
-console.log(blog);
+// console.log(blog);
+
+const tagsArray = blog.tags ? blog.tags.map((tag) => tag.name) : [];
+
+// if (blog.tags) {
+//     const splitTags = blog.tags.split(',').map((tag) => tag.trim());
+//     tagsArray.push(...splitTags);
+// }
 
 // 全記事情報を取得
 const allPosts = await getBlogs({
@@ -57,12 +64,14 @@ const tagsString = blog.tags?.map((tag) => tag.name).join(',') ?? '';
         <h1 class="text-3xl my-8">{blog.title}</h1>
         <img src={blog.mainVisual.url} alt="" />
         <div class="bg-gray-50 rounded-xl p-5 text-gray-700 text-sm my-8 flex flex-col gap-2">
-            <MetaItem iconName="material-symbols:folder" text={blog.category?.name} />
-            {blog.tags && <MetaItem iconName="mdi:tag" text={tagsString} />}
+            <MetaItem iconName="material-symbols:folder">{blog.category?.name}</MetaItem>
+            <MetaItem iconName="mdi:tag">
+                {tagsArray.map((tagitem) => <a href={`/?tag=${tagitem}`}>{tagitem}</a>)}
+            </MetaItem>
             <div class="flex items-center gap-2 text-sm text-gray-600">
-                <MetaItem iconName="mdi:calendar" text={publishedAtDate} />
+                <MetaItem iconName="mdi:calendar">{publishedAtDate}</MetaItem>
                 <div class="flex items-center">
-                    （<MetaItem iconName="material-symbols:update" text={updatedAtDate} />）
+                    （<MetaItem iconName="material-symbols:update">{updatedAtDate}</MetaItem>）
                 </div>
             </div>
         </div>
@@ -70,18 +79,10 @@ const tagsString = blog.tags?.map((tag) => tag.name).join(',') ?? '';
     </main>
     <footer class="bg-gray-50 py-16 px-4">
         <aside class="mx-auto max-w-4xl">
-            <h2 class="text-2xl mb-4"><MetaItem iconName="material-symbols:folder" text={blog.category?.name} /></h2>
+            <h2 class="text-2xl mb-4"><MetaItem iconName="material-symbols:folder">{blog.category?.name}</MetaItem></h2>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 {relatedPosts.map((content) => <ArticleCard article={content} />)}
             </div>
         </aside>
     </footer>
 </Layout>
-<!-- 
-<style>
-    main {
-        margin: auto;
-        padding: 1em;
-        max-width: 60ch;
-    }
-</style> -->
