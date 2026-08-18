@@ -1,17 +1,10 @@
 ---
 import MetaItem from '../components/MetaItem.astro';
 import { formatDate } from '../library/date';
+import type { Blog } from '../library/microcms'
 
 interface Props {
-    article: {
-        id: string;
-        mainVisual: { url: string };
-        title: string;
-        category: { name: string };
-        tags?: { id: string; name: string }[];
-        publishedAt: string;
-        updatedAt: string;
-    };
+    article: Blog;
 }
 
 const { article } = Astro.props;
@@ -20,17 +13,7 @@ const { article } = Astro.props;
 const tags = article.tags || [];
 const tagsString = tags?.map((tag) => tag.id).join(',') || '';
 
-// // 日付の整形
-// // スラッシュをドットにしたい場合は最後に .replaceAll('/', '.') を付与
-// const formatDate = (dateStr: string) => {
-//     if (!dateStr) return '';
-//     return new Date(dateStr).toLocaleDateString('ja-JP', {
-//         year: 'numeric',
-//         month: '2-digit',
-//         day: '2-digit'
-//     });
-// };
-
+// 公開日・更新日を取得する
 const publishedAtFormatted = formatDate(article.publishedAt);
 const updatedAtFormatted = formatDate(article.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
