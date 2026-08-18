@@ -2,6 +2,7 @@
 import ArticleCard from '../components/ArticleCard.astro';
 import MetaItem from '../components/MetaItem.astro';
 import Layout from '../layouts/Layout.astro';
+import { formatDate } from '../library/date';
 import { getBlogDetail, getBlogs } from '../library/microcms';
 
 // 詳細記事ページの全パスを取得
@@ -27,9 +28,7 @@ const tagsArray = blog.tags ? blog.tags.map((tag) => tag.name) : [];
 // }
 
 // 全記事情報を取得
-const allPosts = await getBlogs({
-    fields: ['id', 'title', 'category', 'mainVisual']
-});
+const allPosts = await getBlogs();
 const currentCategoryId = blog.category.id;
 const currentPostId = blog.id;
 
