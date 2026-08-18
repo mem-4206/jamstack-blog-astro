@@ -1,36 +1,50 @@
 ---
-// import ButtonLink from '../components/ButtonLink.astro';
 import ArticleCard from '../components/ArticleCard.astro';
 import TagButton from '../components/TagButton.astro';
 import Layout from '../layouts/Layout.astro';
 // import TwoCol from '../layouts/TwoColLayout.astro';
+// import ButtonLink from '../components/ButtonLink.astro';
 
 //microCMS呼び出し
 import { getBlogs } from '../library/microcms';
 
 const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual', 'category', 'tags', 'publishedAt', 'updatedAt'] });
 const data = response.contents;
-console.log(data);
+// console.log(data);
 
 // タグ一覧を作成
-let rawTags: string[] = [];
-data.forEach((article) => {
-    if (article.tags) {
-        const tagArray = article.tags.map((tag) => tag.name);
-        rawTags.push(...tagArray);
-    }
-});
-const uniqueTagsSet = new Set(rawTags);
-const uniqueTags = [...uniqueTagsSet];
+// let rawTags: string[] = [];
+// data.forEach((article) => {
+//     if (article.tags) {
+//         const tagArray = article.tags.map((tag) => tag.name);
+//         rawTags.push(...tagArray);
+//     }
+// });
+// const uniqueTagsSet = new Set(rawTags);
+// const uniqueTags = [...uniqueTagsSet];
 // console.log('取得されたタグ▼');
 // console.log(uniqueTags);
+
+// 重複を弾くための Map を用意（キー: tag.id, 値: tagオブジェクト）
+const tagsMap = new Map<string, { id: string; name: string }>();
+
+data.forEach((article) => {
+    // tagsが存在する場合のみループ処理
+    article.tags?.forEach((tag) => {
+        // Mapにセット（同じIDが来たら上書きされるため、自然に重複が消える）
+        tagsMap.set(tag.id, tag);
+    });
+});
+const uniqueTags = Array.from(tagsMap.values());
+
+const selectedTagId = Astro.url.searchParams.get('tag');
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
         <nav class="flex flex-wrap gap-w mb-4 gap-4">
             <TagButton link="/" text="すべて" ? />
-            {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem}`} text={tagitem} />)}
+            {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem.id}`} text={tagitem.name} />)}
         </nav>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
             {
@@ -63,17 +77,21 @@ const uniqueTags = [...uniqueTagsSet];
     // URLパラメータの読み込み
     const params = new URLSearchParams(window.location.search);
     const selectedTag = params.get('tag');
-    console.log('選択されたタグ: ' + selectedTag);
-
-    // 全カード取得
-    const allArticles = document.querySelectorAll('article');
-    console.log(allArticles);
 
     if (selectedTag) {
+        // 全カード取得
+        const allArticles = document.querySelectorAll('article');
+
         allArticles.forEach((article) => {
-            var cardTags = article.getAttribute('data-tags');
-            article.classList.toggle('hidden', !cardTags?.includes(selectedTag));
-            console.log(cardTags);
+            // dataset.tags で "data-tags" 属性を取得
+            const cardTags = article.dataset.tags;
+            
+            // カンマで分割して配列にし、完全一致で含まれているか判定
+            const tagList = cardTags ? cardTags.split(',') : [];
+            const hasTag = tagList.includes(selectedTag);
+
+            // タグが含まれていなければ 'hidden' クラスを付与
+            article.classList.toggle('hidden', !hasTag);
         });
     }
 </script>

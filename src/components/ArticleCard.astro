@@ -1,5 +1,4 @@
 ---
-// import TagButton from '../components/TagButton.astro';
 import MetaItem from '../components/MetaItem.astro';
 
 interface Props {
@@ -15,11 +14,10 @@ interface Props {
 }
 
 const { article } = Astro.props;
-// console.log('articleの中身:', article.publishedAt, article.updatedAt);
 
 // タグ配列をカンマ区切りの文字列に変換
 const tags = article.tags || [];
-const tagsString = tags?.map((tag) => tag.name).join(',') || '';
+const tagsString = tags?.map((tag) => tag.id).join(',') || '';
 
 // 日付の整形
 // スラッシュをドットにしたい場合は最後に .replaceAll('/', '.') を付与
@@ -37,9 +35,7 @@ const updatedAtFormatted = formatDate(article.updatedAt);
 ---
 
 <article data-tags={tagsString} class="p-4 flex flex-col md:flex-row">
-    <a href={`/${article.id}`}
-        ><img src={article.mainVisual.url} alt="" class="aspect-video w-full object-cover md:w-2/5 shrink-0" /></a
-    >
+    <a href={`/${article.id}`}><img src={article.mainVisual.url} alt="" class="aspect-video w-full object-cover md:w-2/5 shrink-0" /></a>
     <a href={`/${article.id}`}><h2 class="text-lg text-slate-900 line-clamp-2">{article.title}</h2></a>
     <MetaItem iconName="material-symbols:folder">{article.category?.name}</MetaItem>
     {
