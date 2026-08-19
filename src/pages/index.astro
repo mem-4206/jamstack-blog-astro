@@ -2,28 +2,12 @@
 import ArticleCard from '../components/ArticleCard.astro';
 import TagButton from '../components/TagButton.astro';
 import Layout from '../layouts/Layout.astro';
-// import TwoCol from '../layouts/TwoColLayout.astro';
-// import ButtonLink from '../components/ButtonLink.astro';
 
 //microCMS呼び出し
 import { getBlogs } from '../library/microcms';
 
-const response = await getBlogs({ fields: ['id', 'title', 'content', 'mainVisual', 'category', 'tags', 'publishedAt', 'updatedAt'] });
+const response = await getBlogs();
 const data = response.contents;
-// console.log(data);
-
-// タグ一覧を作成
-// let rawTags: string[] = [];
-// data.forEach((article) => {
-//     if (article.tags) {
-//         const tagArray = article.tags.map((tag) => tag.name);
-//         rawTags.push(...tagArray);
-//     }
-// });
-// const uniqueTagsSet = new Set(rawTags);
-// const uniqueTags = [...uniqueTagsSet];
-// console.log('取得されたタグ▼');
-// console.log(uniqueTags);
 
 // 重複を弾くための Map を用意（キー: tag.id, 値: tagオブジェクト）
 const tagsMap = new Map<string, { id: string; name: string }>();

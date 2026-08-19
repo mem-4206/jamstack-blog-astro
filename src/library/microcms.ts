@@ -1,5 +1,5 @@
 //SDK利用準備
-import type { MicroCMSQueries, MicroCMSListContent } from "microcms-js-sdk";
+import type { MicroCMSListContent, MicroCMSQueries } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 const client = createClient({
@@ -7,12 +7,7 @@ const client = createClient({
 	apiKey: import.meta.env.MICROCMS_API_KEY,
 });
 
-// 型定義
-// type News = {
-//     title: string;
-//     body: string;
-// };
-
+// Blog型を定義する
 export type Blog = {
 	title: string;
 	content: string;
@@ -31,14 +26,14 @@ export type Blog = {
 	updatedAt: Date;
 } & MicroCMSListContent;
 
-// お知らせ取得用関数
-// export const getNews = async (queries?: MicroCMSQueries) => {
-//     return await client.getList<News>({ endpoint: 'news', queries }); // APIのエンドポイントとしてnewsを指定
-// };
-
 // APIの呼び出し
 export const getBlogs = async (queries?: MicroCMSQueries) => {
-	return await client.getList<Blog>({ endpoint: "blogs", queries });
+	return await client.getList<Blog>({
+		endpoint: "blogs",
+		queries: {
+			orders: "-publishedAt",
+		},
+	});
 };
 
 export const getBlogDetail = async (
