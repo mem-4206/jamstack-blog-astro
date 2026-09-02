@@ -1,5 +1,5 @@
 ---
-import ArticleCard from '../components/ArticleCard.astro';
+import ArticleList from '../components/ArticleList.astro';
 import TagButton from '../components/TagButton.astro';
 import Layout from '../layouts/Layout.astro';
 
@@ -7,12 +7,12 @@ import Layout from '../layouts/Layout.astro';
 import { getBlogs } from '../library/microcms';
 
 const response = await getBlogs();
-const data = response.contents;
+const posts = response.contents;
 
 // 重複を弾くための Map を用意（キー: tag.id, 値: tagオブジェクト）
 const tagsMap = new Map<string, { id: string; name: string }>();
 
-data.forEach((article) => {
+posts.forEach((article) => {
     // tagsが存在する場合のみループ処理
     article.tags?.forEach((tag) => {
         // Mapにセット（同じIDが来たら上書きされるため、自然に重複が消える）
@@ -30,13 +30,7 @@ const selectedTagId = Astro.url.searchParams.get('tag');
             <TagButton link="/" text="すべて" ? />
             {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem.id}`} text={tagitem.name} />)}
         </nav>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {
-                response.contents.map((content) => (
-                    <ArticleCard article={content} />
-                ))
-            }
-        </div>
+        <ArticleList articles={posts} />
     </main>
 </Layout>
 
