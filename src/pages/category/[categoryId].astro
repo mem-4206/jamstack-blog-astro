@@ -5,7 +5,6 @@ import { getBlogs, getCategories } from '../../library/microcms';
 
 export async function getStaticPaths() {
     const response = await getCategories();
-
     return response.contents.map((content) => ({
         params: { categoryId: content.id },
         props: { categoryName: content.name }
