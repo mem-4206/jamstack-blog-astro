@@ -9,6 +9,16 @@ interface Props {
 const { articles } = Astro.props;
 ---
 
-<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-    {articles.map((content) => <ArticleCard article={content} />)}
-</div>
+{
+    articles.length === 0 ? (
+        <div>
+            <p class="text-gray-500">まだ記事がありません。</p>
+        </div>
+    ) : (
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {articles.map((content) => (
+                <ArticleCard article={content} />
+            ))}
+        </div>
+    )
+}
