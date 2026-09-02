@@ -26,13 +26,26 @@ export type Blog = {
 	updatedAt: Date;
 } & MicroCMSListContent;
 
+export type Category = {
+    id: string;
+    name: string;
+}
+
 // APIの呼び出し
 export const getBlogs = async (queries?: MicroCMSQueries) => {
 	return await client.getList<Blog>({
 		endpoint: "blogs",
 		queries: {
 			orders: "-publishedAt",
+            ...queries,
 		},
+	});
+};
+
+export const getCategories = async (queries?: MicroCMSQueries) => {
+	return await client.getList<Category>({
+		endpoint: "categories",
+		queries,
 	});
 };
 
