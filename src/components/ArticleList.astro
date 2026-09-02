@@ -1,0 +1,14 @@
+---
+import type { Blog } from '../library/microcms';
+import ArticleCard from './ArticleCard.astro';
+
+interface Props {
+    articles: Blog[];
+}
+
+const { articles } = Astro.props;
+---
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    {articles.map((content) => <ArticleCard article={content} />)}
+</div>
