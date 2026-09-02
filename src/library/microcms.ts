@@ -7,7 +7,7 @@ const client = createClient({
 	apiKey: import.meta.env.MICROCMS_API_KEY,
 });
 
-// Blog型を定義する
+// 型を定義する
 export type Blog = {
 	title: string;
 	content: string;

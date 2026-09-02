@@ -1,27 +1,32 @@
 ---
 import ArticleList from '../../components/ArticleList.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getBlogs, getCategories } from '../../library/microcms'
+import { getBlogs, getCategories } from '../../library/microcms';
 
 export async function getStaticPaths() {
-    const response = await getCategories({ fields: ['id'] });
-    return response.contents.map((content: { id: string }) => ({
-        params: {
-            categoryId: content.id
-        }
-    }))
+    const response = await getCategories();
+
+    return response.contents.map((content) => ({
+        params: { categoryId: content.id },
+        props: { categoryName: content.name }
+    }));
 }
 
+const { categoryName } = Astro.props;
 const { categoryId } = Astro.params;
+
 const response = await getBlogs({
-    filters: `category[equals]${categoryId}`,
+    filters: `category[equals]${categoryId}`
 });
 
 const posts = response.contents;
 ---
 
-<Layout title="カテゴリ別記事一覧">
-    <main>
+<Layout title={`${categoryName}の記事一覧`}>
+    <main class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6">
+            {categoryName}
+        </h1>
         <ArticleList articles={posts} />
     </main>
 </Layout>

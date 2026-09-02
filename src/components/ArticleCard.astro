@@ -19,7 +19,7 @@ const updatedAtFormatted = formatDate(article.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
 ---
 
-<article data-tags={tagsString} class="p-4 flex flex-col md:flex-row">
+<article data-tags={tagsString} class="flex flex-col md:flex-row">
     <a href={`/${article.id}`}>
         <img
             src={article.mainVisual.url}
