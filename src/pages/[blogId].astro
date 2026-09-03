@@ -2,7 +2,7 @@
 import ArticleCard from '../components/ArticleCard.astro';
 import MetaItem from '../components/MetaItem.astro';
 import Layout from '../layouts/Layout.astro';
-import { formatDate } from '../library/date';
+// import { formatDate } from '../library/date';
 import { getBlogDetail, getBlogs } from '../library/microcms';
 
 // 詳細記事ページの全パスを取得
@@ -74,7 +74,10 @@ const tagsString = blog.tags?.map((tag) => tag.name).join(',') ?? '';
                 </div>
             </div>
         </div>
-        <div class="my-16" set:html={blog.content} />
+        <div 
+            class="prose prose-slate max-w-none my-16"
+            set:html={blog.content}
+        />
     </main>
     <footer class="bg-gray-50 py-16 px-4">
         <aside class="mx-auto max-w-4xl">

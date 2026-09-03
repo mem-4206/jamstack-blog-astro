@@ -26,6 +26,7 @@
         "@eslint/js": "^10.0.1",
         "@iconify-json/material-symbols": "^1.2.83",
         "@iconify-json/mdi": "^1.2.3",
+        "@tailwindcss/typography": "^0.5.20",
         "@typescript-eslint/parser": "^8.62.1",
         "astro-eslint-parser": "^2.1.0",
         "eslint": "^10.6.0",
