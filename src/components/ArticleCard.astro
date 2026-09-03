@@ -17,38 +17,67 @@ const tagsString = tags?.map((tag) => tag.id).join(',') || '';
 const publishedAtFormatted = formatDate(article.publishedAt);
 const updatedAtFormatted = formatDate(article.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
+
+const articleUrl = `/${article.id}`;
 ---
 
-<article data-tags={tagsString} class="flex flex-col md:flex-row">
-    <a href={`/${article.id}`}>
-        <img
-            src={article.mainVisual.url}
-            alt=""
-            loading="lazy"
-            decoding="async"
-            class="aspect-video w-full object-cover md:w-2/5 shrink-0"
-        />
-    </a>
-    <a href={`/${article.id}`}><h2 class="text-lg text-slate-900 line-clamp-2">{article.title}</h2></a>
-    <MetaItem iconName="material-symbols:folder">{article.category?.name}</MetaItem>
+<article
+    data-tags={tagsString}
+    class="group relative overflow-hidden flex flex-col h-full rounded-xl shadow-solid border-2 border-modern-charcoal transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#2B2B2A] active:translate-x-1 active:translate-y-1 active:shadow-none"
+>
+    <!-- カード全体のリンク -->
+    <a href={articleUrl} class="absolute inset-0 z-10" aria-label={article.title}></a>
+
+    <!-- アイキャッチ -->
     {
-        tags.length > 0 && (
-            <MetaItem iconName="mdi:tag">
-                {tags.map((tag) => (
-                    <a href={`/?tag=${tag.id}`}>{tag.name}</a>
-                ))}
-            </MetaItem>
+        article.mainVisual && (
+            <div class="relative aspect-video w-full md:h-auto overflow-hidden bg-slate-100 shrink-0">
+                <img
+                    src={article.mainVisual.url}
+                    alt=""
+                    loading="lazy"
+                    decoding="async"
+                    class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                />
+                {article.category && (
+                    <span class="absolute z-20 bottom-2 left-2 font-semibold text-xs text-modern-charcoal hover:text-white bg-white hover:bg-modern-blue rounded-full border-2 border-modern-charcoal px-2 py-1 cursor-pointer">
+                        <a href={`/category/${article.category.id}`}>{article.category?.name}</a>
+                    </span>
+                )}
+            </div>
         )
     }
-    <div class="flex items-center gap-2 text-sm text-gray-600">
-        <MetaItem iconName="mdi:calendar">{publishedAtFormatted}</MetaItem>
 
-        {
-            isUpdated && (
-                <div class="flex items-center">
-                    （<MetaItem iconName="material-symbols:update">{updatedAtFormatted}</MetaItem>）
-                </div>
-            )
-        }
+    <div class="px-4 py-4 flex-1 flex flex-col justify-between">
+        <div>
+            <h2 class="text-xl font-bold text-modern-charcoal mb-1 line-clamp-2 group-hover:underline">
+                {article.title}
+            </h2>
+
+            <div class="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-500 mb-3">
+                {
+                    tags.length > 0 && (
+                        <div class="flex gap-2">
+                            {tags.map((tag) => (
+                                <span class="text-slate-600">#{tag.name}</span>
+                            ))}
+                        </div>
+                    )
+                }
+            </div>
+            <!-- 公開日と更新日 -->
+            <div class="flex items-center gap-2 text-xs text-slate-400">
+                <MetaItem iconName="mdi:calendar">
+                    <time datetime={article.publishedAt}>{publishedAtFormatted}</time>
+                </MetaItem>
+                {
+                    isUpdated && (
+                        <MetaItem iconName="material-symbols:update">
+                            <time datetime="{article.updatedAt">{updatedAtFormatted}</time>
+                        </MetaItem>
+                    )
+                }
+            </div>
+        </div>
     </div>
 </article>

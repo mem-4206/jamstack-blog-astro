@@ -2,73 +2,60 @@
 import ArticleList from '../components/ArticleList.astro';
 import TagButton from '../components/TagButton.astro';
 import Layout from '../layouts/Layout.astro';
-
-//microCMS呼び出し
 import { getBlogs } from '../library/microcms';
 
 const response = await getBlogs();
 const posts = response.contents;
 
-// 重複を弾くための Map を用意（キー: tag.id, 値: tagオブジェクト）
+// タグボタン作成 重複の排除
 const tagsMap = new Map<string, { id: string; name: string }>();
-
 posts.forEach((article) => {
-    // tagsが存在する場合のみループ処理
     article.tags?.forEach((tag) => {
-        // Mapにセット（同じIDが来たら上書きされるため、自然に重複が消える）
         tagsMap.set(tag.id, tag);
     });
 });
 const uniqueTags = Array.from(tagsMap.values());
-
-const selectedTagId = Astro.url.searchParams.get('tag');
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
-        <nav class="flex flex-wrap gap-w mb-4 gap-4">
-            <TagButton link="/" text="すべて" ? />
-            {uniqueTags.map((tagitem) => <TagButton link={`/?tag=${tagitem.id}`} text={tagitem.name} />)}
-        </nav>
+        <section class="mb-8">
+            <h2 class="text-xs font-semibold text-modern-charcoal uppercase tracking-wider mb-3">タグで絞り込み</h2>
+            <div class="flex flex-wrap gap-2">
+                <TagButton link="/" text="すべて" ? />
+                {uniqueTags.map((tagitem) => (
+                    <TagButton
+                        link={`/?tag=${tagitem.id}`}
+                        text={tagitem.name}
+                        tagId={tagitem.id}
+                    />
+                ))}
+            </div>
+        </section>
         <ArticleList articles={posts} />
     </main>
 </Layout>
 
-<style>
-    main {
-        display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
-    }
-    /* .info {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-    } */
-
-    .iflame {
-        height: 30rem;
-    }
-</style>
-
 <script>
-    // URLパラメータの読み込み
     const params = new URLSearchParams(window.location.search);
     const selectedTag = params.get('tag');
 
+    const targetTagId = selectedTag || 'all';
+    const activeBtn = document.querySelector(`[data-tag-button="${targetTagId}"]`);
+
+    if (activeBtn) {
+        activeBtn.classList.remove('bg-modern-paper', 'text-modern-charcoal');
+        activeBtn.classList.add('bg-modern-blue', 'text-white');
+    }
+
     if (selectedTag) {
-        // 全カード取得
         const allArticles = document.querySelectorAll('article');
 
         allArticles.forEach((article) => {
-            // dataset.tags で "data-tags" 属性を取得
             const cardTags = article.dataset.tags;
-            
-            // カンマで分割して配列にし、完全一致で含まれているか判定
             const tagList = cardTags ? cardTags.split(',') : [];
             const hasTag = tagList.includes(selectedTag);
 
-            // タグが含まれていなければ 'hidden' クラスを付与
             article.classList.toggle('hidden', !hasTag);
         });
     }

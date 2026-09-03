@@ -2,11 +2,17 @@
 interface Props {
     link: string;
     text: string;
+    tagId?: string;
 }
 
-const { link, text } = Astro.props;
+const { link, text, tagId = 'all' } = Astro.props;
 ---
 
-<a href={link} class="px-2 py-1 bg-slate-100 text-slate-600">
+<a 
+    href={link} 
+    data-tag-button={tagId}
+    class="text-xs sm:text-sm font-semibold px-3.5 py-1.5 rounded-full border-2 border-modern-charcoal transition-colors bg-modern-paper text-modern-white hover:bg-modern-blue hover:text-white"
+    
+    >
     {text}
 </a>
