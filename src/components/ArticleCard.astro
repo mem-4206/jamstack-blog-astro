@@ -17,10 +17,12 @@ const tagsString = tags?.map((tag) => tag.id).join(',') || '';
 const publishedAtFormatted = formatDate(article.publishedAt);
 const updatedAtFormatted = formatDate(article.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
+
+const articleUrl = `/${article.id}`;
 ---
 
 <article data-tags={tagsString} class="overflow-hidden flex flex-col md:flex-row h-full">
-    <a href={`/${article.id}`} class="block flex-1 flex flex-col">
+    <a href={articleUrl} class="block flex-1 flex flex-col">
         {
             article.mainVisual && (
                 <div class="aspect-video w-full overflow-hidden bg-slate-100">
@@ -50,7 +52,7 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
         </div>
 
         <div>
-            <a href={`/${article.id}`}>
+            <a href={articleUrl}>
                 <h2 class="text-lg font-bold text-modern-charcol mb-2 line-clamp-2">{article.title}</h2>
             </a>
 
