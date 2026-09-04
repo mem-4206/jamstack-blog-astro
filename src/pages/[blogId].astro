@@ -3,10 +3,11 @@ import ArticleList from '../components/ArticleList.astro';
 import MetaItem from '../components/MetaItem.astro';
 import Layout from '../layouts/Layout.astro';
 import { formatDate } from '../library/date';
-import { getBlogDetail, getBlogs } from '../library/microcms';
+import { type Blog, getBlogDetail, getBlogs, getCategories, getRelatedPosts } from '../library/microcms';
 
-// 詳細記事ページの全パスを取得
+// 全記事のIDを取得してパスを生成する
 export async function getStaticPaths() {
+    const categories = await getCategories();
     const response = await getBlogs({ fields: ['id'] });
     return response.contents.map((content) => ({
         params: { blogId: content.id }
@@ -16,23 +17,31 @@ export async function getStaticPaths() {
 // 記事の詳細情報を取得
 const { blogId } = Astro.params;
 
+// パラメータの存在をチェック
 if (!blogId) {
     return Astro.redirect('/404');
 }
 
-const blog = await getBlogDetail(blogId);
+// 記事データの取得と 404 ハンドリング
+let blog: Blog | null = null;
 
-// const tagsArray = blog.tags ? blog.tags.map((tag) => tag.name) : [];
+try {
+    blog = await getBlogDetail(blogId);
+} catch (e) {
+    return Astro.redirect('/404');
+}
 
-// 全記事情報を取得
-const allPosts = await getBlogs();
-const currentCategoryId = blog.category.id;
-const currentPostId = blog.id;
+if (!blog) {
+    return Astro.redirect('/404')
+}
 
-// カテゴリが同じ記事（現在の記事以外）を取得
-const relatedPosts = allPosts.contents
-    .filter((post) => post.category?.id === currentCategoryId && post.id !== currentPostId)
-    .slice(0, 3);
+// 関連記事の取得
+let relatedPosts: Blog[] = [];
+
+if (blog.category?.id) {
+    const response = await getRelatedPosts(blog.category.id, blog.id);
+    relatedPosts = response.contents;
+}
 
 // Dateデータの整形
 const publishedAtFormatted = formatDate(blog.publishedAt);
@@ -51,7 +60,7 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
                         blog.category && (
                             <a
                                 href={`/category/${blog.category.id}`}
-                                class="bg-white text-modern-charcoal px-3 py-1 rounded-full text-xs font-semibold border-2 border-modern-charcoal hover:bg-modern-blue hover:text-white transition-colors"
+                                class="bg-white text-modern-charcoal px-3 py-1 rounded-full text-md font-semibold border-2 border-modern-charcoal hover:bg-modern-blue hover:text-white transition-colors"
                             >
                                 {blog.category.name}
                             </a>
@@ -101,9 +110,10 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
                 <div set:html={blog.content} />
             </div>
         </article>
+
         <section class="mt-12 pt-8 border-t border-slate-900 mb-16">
-            <h2 class="text-2xl mb-4 text-lg font-semibold">
-                <a href={`/category/${blog.category.id}`} class="text-modern-blue">"{blog.category?.name}"</a> の最新記事
+            <h2 class="text-2xl mb-4 font-semibold">
+                <a href={`/category/${blog.category.id}`} class="text-modern-blue">"{blog.category?.name}"</a> のほかの記事
             </h2>
             <ArticleList articles={relatedPosts} />
         </section>
