@@ -1,5 +1,5 @@
 //SDK利用準備
-import type { MicroCMSListContent, MicroCMSQueries } from "microcms-js-sdk";
+import type { MicroCMSListContent, MicroCMSListResponse, MicroCMSQueries } from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 const client = createClient({
@@ -31,7 +31,15 @@ export type Category = {
     name: string;
 }
 
-// APIの呼び出し
+export type Tag = {
+    id: string;
+    name: string;
+    createdAt: string;
+    updatedAt: string;
+    publishedAt: string;
+    revisedAt: string;
+}
+
 export const getBlogs = async (queries?: MicroCMSQueries) => {
 	return await client.getList<Blog>({
 		endpoint: "blogs",
@@ -68,3 +76,10 @@ export const getRelatedPosts = async (categoryId: string) => {
 		},
 	});
 };
+
+export const getTags = async (queries?: MicroCMSQueries) => {
+    return await client.get<MicroCMSListResponse<Tag>>({
+        endpoint: 'tags',
+        queries,
+    });
+}

@@ -1,7 +1,8 @@
 ---
 import ArticleList from '../../components/ArticleList.astro';
+import TagFilter from '../../components/TagFilter.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getBlogs, getCategories } from '../../library/microcms';
+import { getBlogs, getCategories, getTags } from '../../library/microcms';
 
 export async function getStaticPaths() {
     const response = await getCategories();
@@ -10,7 +11,6 @@ export async function getStaticPaths() {
     }));
 }
 
-// const { categoryName } = Astro.props;
 const { categoryId } = Astro.params;
 
 if (!categoryId) {
@@ -24,19 +24,24 @@ if (!category) {
     return Astro.redirect('/404');
 }
 
-const response = await getBlogs({
-    filters: `category[equals]${categoryId}`
+// 該当カテゴリの記事一覧を取得
+const blogsResponse = await getBlogs({
+    filters: `category[equals]${categoryId}`,
 });
-const articles = response.contents;
+const articles = blogsResponse.contents;
+
+const tagsResponse = await getTags();
+const allTags = tagsResponse.contents;
 ---
 
 <Layout title={`${category.name}の記事一覧 | My Blog.`}>
     <main class="max-w-5xl mx-auto px-4">
-        <header class="mb-8 pb-6">
+        <header class="mb-4 pb-4">
             <h1 class="text-2xl smm:text-3xl font-extrabold text-modern-charcoal">
                 {category.name}
             </h1>
         </header>
+        <TagFilter tags={allTags} />
         <ArticleList articles={articles} />
     </main>
 </Layout>

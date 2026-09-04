@@ -1,8 +1,8 @@
 ---
 import ArticleList from '../components/ArticleList.astro';
-import TagButton from '../components/TagButton.astro';
+import TagFilter from '../components/TagFilter.astro';
 import Layout from '../layouts/Layout.astro';
-import { getBlogs } from '../library/microcms';
+import { getBlogs, getTags } from '../library/microcms';
 
 const response = await getBlogs();
 const posts = response.contents;
@@ -14,49 +14,16 @@ posts.forEach((article) => {
         tagsMap.set(tag.id, tag);
     });
 });
-const uniqueTags = Array.from(tagsMap.values());
+
+const tagsResponse = await getTags();
+const allTags = tagsResponse.contents
 ---
 
 <Layout title="Jamstack Portalsite">
     <main>
         <section class="mb-8">
-            <h2 class="text-xs font-semibold text-modern-charcoal uppercase tracking-wider mb-3">タグで絞り込み</h2>
-            <div class="flex flex-wrap gap-2">
-                <TagButton link="/" text="すべて" ? />
-                {uniqueTags.map((tagitem) => (
-                    <TagButton
-                        link={`/?tag=${tagitem.id}`}
-                        text={tagitem.name}
-                        tagId={tagitem.id}
-                    />
-                ))}
-            </div>
+            <TagFilter tags={allTags} />
         </section>
         <ArticleList articles={posts} />
     </main>
 </Layout>
-
-<script>
-    const params = new URLSearchParams(window.location.search);
-    const selectedTag = params.get('tag');
-
-    const targetTagId = selectedTag || 'all';
-    const activeBtn = document.querySelector(`[data-tag-button="${targetTagId}"]`);
-
-    if (activeBtn) {
-        activeBtn.classList.remove('bg-modern-paper', 'text-modern-charcoal');
-        activeBtn.classList.add('bg-modern-blue', 'text-white');
-    }
-
-    if (selectedTag) {
-        const allArticles = document.querySelectorAll('article');
-
-        allArticles.forEach((article) => {
-            const cardTags = article.dataset.tags;
-            const tagList = cardTags ? cardTags.split(',') : [];
-            const hasTag = tagList.includes(selectedTag);
-
-            article.classList.toggle('hidden', !hasTag);
-        });
-    }
-</script>

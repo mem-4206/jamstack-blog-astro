@@ -1,0 +1,75 @@
+---
+import type { Tag } from '../library/microcms';
+
+interface Props {
+    tags: Tag[];
+}
+
+const { tags } = Astro.props;
+---
+
+<div class="mb-8">
+    <p class="text-xs font-semibold text-modern-charcoal mb-3 uppercase tracking-wider">
+        <span class="text-modern-red">#</span>タグで絞り込み</p>
+    <div class="flex flex-wrap gap-2">
+        <button
+            type="button"
+            data-tag-button="all"
+            class="tag-btn"
+        >
+            すべて
+        </button>
+
+        {
+            tags.map((tag) => (
+                <button
+                    type="button"
+                    data-tag-button={tag.id}
+                    class="tag-btn"
+                >
+                    #{tag.name}
+                </button>
+            ))
+        }
+    </div>
+</div>
+
+<script>
+    const params = new URLSearchParams(window.location.search);
+    const selectedTag = params.get('tag');
+
+    const targetTagId = selectedTag || 'all';
+    const activeBtn = document.querySelector(`[data-tag-button="${targetTagId}"]`);
+
+    if (activeBtn) {
+        activeBtn.classList.add('tag-btn-active')
+    }
+
+    if (selectedTag) {
+        const allArticles = document.querySelectorAll('article');
+
+        allArticles.forEach((article) => {
+            const cardTags = article.dataset.tags;
+            const tagList = cardTags ? cardTags.split(',') : [];
+            const hasTag = tagList.includes(selectedTag);
+
+            article.classList.toggle('hidden', !hasTag);
+        });
+    }
+
+    const buttons = document.querySelectorAll<HTMLButtonElement>('[data-tag-button]');
+    buttons.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            const tagId = btn.dataset.tagButton;
+            const url = new URL(window.location.href);
+
+            if (tagId === 'all' || !tagId) {
+                url.searchParams.delete('tag');
+            } else {
+                url.searchParams.set('tag', tagId);
+            }
+
+            window.location.href = url.toString();
+        });
+    });
+</script>
