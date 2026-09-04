@@ -2,7 +2,8 @@
 import ArticleList from '../../components/ArticleList.astro';
 import TagFilter from '../../components/TagFilter.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getBlogs, getCategories, getTags } from '../../library/microcms';
+import { getBlogs, getCategories } from '../../library/microcms';
+import { extractUniqueTags } from '../../library/utils';
 
 export async function getStaticPaths() {
     const response = await getCategories();
@@ -30,13 +31,7 @@ const blogsResponse = await getBlogs({
 });
 const articles = blogsResponse.contents;
 
-const categoryTags = Array.from(
-    new Map(
-        articles
-            .flatMap((article) => article.tags || [])
-            .map((tag) => [tag.id, tag])
-    ).values()
-);
+const categoryTags = extractUniqueTags(articles);
 ---
 
 <Layout title={`${category.name}の記事一覧 | My Blog.`}>
