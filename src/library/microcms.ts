@@ -1,5 +1,9 @@
 //SDK利用準備
-import type { MicroCMSListContent, MicroCMSListResponse, MicroCMSQueries } from "microcms-js-sdk";
+import type {
+	MicroCMSListContent,
+	MicroCMSListResponse,
+	MicroCMSQueries,
+} from "microcms-js-sdk";
 import { createClient } from "microcms-js-sdk";
 
 // SDK初期化
@@ -14,15 +18,15 @@ const client = createClient({
 
 // カテゴリ
 export type Category = {
-    id: string;
-    name: string;
-} & Partial<MicroCMSListContent>
+	id: string;
+	name: string;
+} & Partial<MicroCMSListContent>;
 
 // タグ
 export type Tag = {
-    id: string;
-    name: string;
-} & Partial<MicroCMSListContent>
+	id: string;
+	name: string;
+} & Partial<MicroCMSListContent>;
 
 // ブログ記事
 export type Blog = {
@@ -30,8 +34,8 @@ export type Blog = {
 	content: string;
 	mainVisual?: {
 		url: string;
-        height?: number;
-        width?: number;
+		height?: number;
+		width?: number;
 	};
 	category: Category;
 	tags: Tag[];
@@ -47,7 +51,7 @@ export const getBlogs = async (queries?: MicroCMSQueries) => {
 		endpoint: "blogs",
 		queries: {
 			orders: "-publishedAt",
-            ...queries,
+			...queries,
 		},
 	});
 };
@@ -74,28 +78,31 @@ export const getCategories = async (queries?: MicroCMSQueries) => {
 
 // タグ一覧を取得
 export const getTags = async (queries?: MicroCMSQueries) => {
-    return await client.get<MicroCMSListResponse<Tag>>({
-        endpoint: 'tags',
-        queries,
-    });
-}
+	return await client.get<MicroCMSListResponse<Tag>>({
+		endpoint: "tags",
+		queries,
+	});
+};
 
 // 特定のカテゴリの関連記事を取得
-export const getRelatedPosts = async (categoryId: string, currentBlogId?: string) => {
-    const response = await client.getList<Blog>({
-        endpoint: "blogs",
+export const getRelatedPosts = async (
+	categoryId: string,
+	currentBlogId?: string,
+) => {
+	const response = await client.getList<Blog>({
+		endpoint: "blogs",
 		queries: {
 			filters: `category[equals]'${categoryId}'`,
 		},
-    });
+	});
 
-    // 現在開いている記事の除外
-    if (currentBlogId) {
-        return {
-            ...response,
-            contents: response.contents.filter((blog) => blog.id !== currentBlogId),
-        };
-    }
+	// 現在開いている記事の除外
+	if (currentBlogId) {
+		return {
+			...response,
+			contents: response.contents.filter((blog) => blog.id !== currentBlogId),
+		};
+	}
 
 	return response;
 };

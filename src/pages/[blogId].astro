@@ -1,17 +1,23 @@
 ---
-import ArticleList from '../components/ArticleList.astro';
-import MetaItem from '../components/MetaItem.astro';
-import Layout from '../layouts/Layout.astro';
-import { formatDate } from '../library/date';
-import { type Blog, getBlogDetail, getBlogs, getCategories, getRelatedPosts } from '../library/microcms';
+import ArticleList from "../components/ArticleList.astro";
+import MetaItem from "../components/MetaItem.astro";
+import Layout from "../layouts/Layout.astro";
+import { formatDate } from "../library/date";
+import {
+	type Blog,
+	getBlogDetail,
+	getBlogs,
+	getCategories,
+	getRelatedPosts,
+} from "../library/microcms";
 
 // 全記事のIDを取得してパスを生成する
 export async function getStaticPaths() {
-    const categories = await getCategories();
-    const response = await getBlogs({ fields: ['id'] });
-    return response.contents.map((content) => ({
-        params: { blogId: content.id }
-    }));
+	const categories = await getCategories();
+	const response = await getBlogs({ fields: ["id"] });
+	return response.contents.map((content) => ({
+		params: { blogId: content.id },
+	}));
 }
 
 // 記事の詳細情報を取得
@@ -19,28 +25,28 @@ const { blogId } = Astro.params;
 
 // パラメータの存在をチェック
 if (!blogId) {
-    return Astro.redirect('/404');
+	return Astro.redirect("/404");
 }
 
 // 記事データの取得と 404 ハンドリング
 let blog: Blog | null = null;
 
 try {
-    blog = await getBlogDetail(blogId);
+	blog = await getBlogDetail(blogId);
 } catch (e) {
-    return Astro.redirect('/404');
+	return Astro.redirect("/404");
 }
 
 if (!blog) {
-    return Astro.redirect('/404')
+	return Astro.redirect("/404");
 }
 
 // 関連記事の取得
 let relatedPosts: Blog[] = [];
 
 if (blog.category?.id) {
-    const response = await getRelatedPosts(blog.category.id, blog.id);
-    relatedPosts = response.contents;
+	const response = await getRelatedPosts(blog.category.id, blog.id);
+	relatedPosts = response.contents;
 }
 
 // Dateデータの整形

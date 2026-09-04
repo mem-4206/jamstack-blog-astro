@@ -1,8 +1,8 @@
 ---
-import ArticleList from '../components/ArticleList.astro';
-import TagFilter from '../components/TagFilter.astro';
-import Layout from '../layouts/Layout.astro';
-import { getBlogs, getTags } from '../library/microcms';
+import ArticleList from "../components/ArticleList.astro";
+import TagFilter from "../components/TagFilter.astro";
+import Layout from "../layouts/Layout.astro";
+import { getBlogs, getTags } from "../library/microcms";
 
 const response = await getBlogs();
 const posts = response.contents;
@@ -10,13 +10,13 @@ const posts = response.contents;
 // タグボタン作成 重複の排除
 const tagsMap = new Map<string, { id: string; name: string }>();
 posts.forEach((article) => {
-    article.tags?.forEach((tag) => {
-        tagsMap.set(tag.id, tag);
-    });
+	article.tags?.forEach((tag) => {
+		tagsMap.set(tag.id, tag);
+	});
 });
 
 const tagsResponse = await getTags();
-const allTags = tagsResponse.contents
+const allTags = tagsResponse.contents;
 ---
 
 <Layout title="Jamstack Portalsite">

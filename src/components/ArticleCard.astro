@@ -1,10 +1,10 @@
 ---
-import MetaItem from '../components/MetaItem.astro';
-import { formatDate } from '../library/date';
-import type { Blog } from '../library/microcms';
+import MetaItem from "../components/MetaItem.astro";
+import { formatDate } from "../library/date";
+import type { Blog } from "../library/microcms";
 
 interface Props {
-    article: Blog;
+	article: Blog;
 }
 
 const { article } = Astro.props;
@@ -17,7 +17,7 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
 const articleUrl = `/${article.id}`;
 
 const tags = article.tags || [];
-const tagIds = article.tags?.map((t) => t.id).join(',') ?? '';
+const tagIds = article.tags?.map((t) => t.id).join(",") ?? "";
 ---
 
 <article
@@ -25,7 +25,10 @@ const tagIds = article.tags?.map((t) => t.id).join(',') ?? '';
     class="group relative overflow-hidden flex flex-col h-full rounded-xl shadow-solid border-2 border-modern-charcoal transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#2B2B2A] active:translate-x-1 active:translate-y-1 active:shadow-none"
 >
     <!-- カード全体のリンク -->
-    <a href={articleUrl} class="absolute inset-0 z-10" aria-label={article.title}></a>
+    <a
+        href={articleUrl}
+        class="absolute inset-0 z-10"
+        aria-label={article.title}></a>
 
     <!-- アイキャッチ -->
     {
@@ -40,7 +43,9 @@ const tagIds = article.tags?.map((t) => t.id).join(',') ?? '';
                 />
                 {article.category && (
                     <span class="absolute z-20 bottom-2 left-2 font-semibold text-xs text-modern-charcoal hover:text-white bg-white hover:bg-modern-blue rounded-full border-2 border-modern-charcoal px-2 py-1 cursor-pointer">
-                        <a href={`/category/${article.category.id}`}>{article.category?.name}</a>
+                        <a href={`/category/${article.category.id}`}>
+                            {article.category?.name}
+                        </a>
                     </span>
                 )}
             </div>
@@ -49,24 +54,42 @@ const tagIds = article.tags?.map((t) => t.id).join(',') ?? '';
 
     <div class="px-4 py-4 flex-1 flex flex-col justify-between">
         <div>
-            <h2 class="text-xl font-bold text-modern-charcoal mb-1 line-clamp-2 group-hover:underline">
+            <h2
+                class="text-xl font-bold text-modern-charcoal mb-1 line-clamp-2 group-hover:underline"
+            >
                 {article.title}
             </h2>
 
-            <div class="flex flex-wrap items-center gap-x-2 text-xs text-modern-charcoal line-clamp-2 mt-2 mb-4">
-                {tags.slice(0, 3).map((tag) => <span class="text-slate-600">#{tag.name}</span>)}
-                {tags.length > 3 && <span class="text-slate-400">+{tags.length - 3}</span>}
+            <div
+                class="flex flex-wrap items-center gap-x-2 text-xs text-modern-charcoal line-clamp-2 mt-2 mb-4"
+            >
+                {
+                    tags
+                        .slice(0, 3)
+                        .map((tag) => (
+                            <span class="text-slate-600">#{tag.name}</span>
+                        ))
+                }
+                {
+                    tags.length > 3 && (
+                        <span class="text-slate-400">+{tags.length - 3}</span>
+                    )
+                }
             </div>
         </div>
         <!-- 公開日と更新日 -->
         <div class="flex items-center gap-2 text-xs text-slate-400">
             <MetaItem iconName="mdi:calendar">
-                <time datetime={article.publishedAt}>{publishedAtFormatted}</time>
+                <time datetime={article.publishedAt}
+                    >{publishedAtFormatted}</time
+                >
             </MetaItem>
             {
                 isUpdated && (
                     <MetaItem iconName="material-symbols:update">
-                        <time datetime="{article.updatedAt">{updatedAtFormatted}</time>
+                        <time datetime="{article.updatedAt">
+                            {updatedAtFormatted}
+                        </time>
                     </MetaItem>
                 )
             }

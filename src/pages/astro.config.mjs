@@ -5,4 +5,4 @@
 // // https://astro.build/config
 // export default defineConfig({
 //   integrations: [tailwind(),icon(),]
-// }); 
+// });
