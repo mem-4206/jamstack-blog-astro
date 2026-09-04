@@ -1,3 +1,13 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+    .tag-btn {
+        @apply bg-modern-paper text-modern-charcoal border border-modern-charcoal px-3 py-1.5 rounded-full text-xs font-semibold transition-colors cursor-pointer hover:bg-modern-red hover:text-white
+    }
+
+    .tag-btn-active {
+        @apply bg-modern-red text-white
+    }
+}

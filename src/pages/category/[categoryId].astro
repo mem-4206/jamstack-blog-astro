@@ -1,31 +1,52 @@
 ---
 import ArticleList from '../../components/ArticleList.astro';
+import TagFilter from '../../components/TagFilter.astro';
 import Layout from '../../layouts/Layout.astro';
-import { getBlogs, getCategories } from '../../library/microcms';
+import { getBlogs, getCategories, getTags } from '../../library/microcms';
 
 export async function getStaticPaths() {
     const response = await getCategories();
     return response.contents.map((content) => ({
-        params: { categoryId: content.id },
-        props: { categoryName: content.name }
+        params: { categoryId: content.id }
     }));
 }
 
-const { categoryName } = Astro.props;
 const { categoryId } = Astro.params;
 
-const response = await getBlogs({
-    filters: `category[equals]${categoryId}`
-});
+if (!categoryId) {
+    return Astro.redirect('/404');
+}
 
-const posts = response.contents;
+const categoriesResponse = await getCategories();
+const category = categoriesResponse.contents.find((c) => c.id === categoryId);
+
+if (!category) {
+    return Astro.redirect('/404');
+}
+
+// 該当カテゴリの記事一覧を取得
+const blogsResponse = await getBlogs({
+    filters: `category[equals]${categoryId}`,
+});
+const articles = blogsResponse.contents;
+
+const categoryTags = Array.from(
+    new Map(
+        articles
+            .flatMap((article) => article.tags || [])
+            .map((tag) => [tag.id, tag])
+    ).values()
+);
 ---
 
-<Layout title={`${categoryName}の記事一覧`}>
-    <main class="container mx-auto px-4 py-8">
-        <h1 class="text-3xl font-bold mb-6">
-            {categoryName}
-        </h1>
-        <ArticleList articles={posts} />
-    </main>
+<Layout title={`${category.name}の記事一覧 | My Blog.`}>
+    <div class="max-w-5xl mx-auto">
+        <header class="mb-4 pb-4">
+            <h1 class="text-2xl smm:text-3xl font-extrabold text-modern-charcoal">
+                {category.name}
+            </h1>
+        </header>
+        {categoryTags.length > 0 && <TagFilter tags={categoryTags} />}
+        <ArticleList articles={articles} />
+    </div>
 </Layout>
