@@ -9,20 +9,19 @@ interface Props {
 
 const { article } = Astro.props;
 
-// タグ配列をカンマ区切りの文字列に変換
-const tags = article.tags || [];
-const tagsString = tags?.map((tag) => tag.id).join(',') || '';
-
 // 公開日・更新日を取得する
 const publishedAtFormatted = formatDate(article.publishedAt);
 const updatedAtFormatted = formatDate(article.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
 
 const articleUrl = `/${article.id}`;
+
+const tags = article.tags || [];
+const tagIds = article.tags?.map((t) => t.id).join(',') ?? '';
 ---
 
 <article
-    data-tags={tagsString}
+    data-tags={tagIds}
     class="group relative overflow-hidden flex flex-col h-full rounded-xl shadow-solid border-2 border-modern-charcoal transition-all hover:translate-x-0.5 hover:translate-y-0.5 hover:shadow-[2px_2px_0px_0px_#2B2B2A] active:translate-x-1 active:translate-y-1 active:shadow-none"
 >
     <!-- カード全体のリンク -->
