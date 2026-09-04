@@ -9,7 +9,7 @@ import { getBlogDetail, getBlogs } from '../library/microcms';
 export async function getStaticPaths() {
     const response = await getBlogs({ fields: ['id'] });
     return response.contents.map((content) => ({
-        params: { blogId: content.id },
+        params: { blogId: content.id }
     }));
 }
 
@@ -41,70 +41,71 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
 ---
 
 <Layout title={`${blog.title}`}>
-    <article class="mx-auto max-w-3xl">
-        <!-- 記事ヘッダー -->
-        <header class="mb-4 pb-4">
-            <!-- カテゴリ -->
-            <div class="mb-2">
-                {
-                    blog.category && (
-                        <a
-                            href={`/category/${blog.category.id}`}
-                            class="bg-white text-modern-charcoal px-3 py-1 rounded-full text-xs font-semibold border-2 border-modern-charcoal hover:bg-modern-blue hover:text-white transition-colors"
-                        >
-                            {blog.category.name}
-                        </a>
-                    )
-                }
-            </div>
-            <h1
-                class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2"
-            >
-                {blog.title}
-            </h1>
-            <div class="flex flex-wrap items-center gap-2 mb-2">
-                {
-                    blog.tags?.map((tag) => (
-                        <a
-                            href={`/?tag=${tag.id}`}
-                            class="text-modern-charcoal text-xs font-medium hover:text-modern-red transition-colors"
-                        >
-                            #{tag.name}
-                        </a>
-                    ))
-                }
-            </div>
-            <div class="flex items-center gap-4 text-xs sm:text-sm text-slate-500">
-                <MetaItem iconName="mdi:calendar">
-                    <time datetime={blog.publishedAt}>{publishedAtFormatted}</time>
-                </MetaItem>
-                {
-                    isUpdated && (
-                        <MetaItem iconName="material-symbols:update">
-                            <time datetime={blog.updatedAt}>{updatedAtFormatted}</time>
-                        </MetaItem>
-                    )
-                }
-            </div>
-        </header>
-
-        {
-            blog.mainVisual && (
-                <div class="mb-8 rounded-xl overflow-hidden aspect-ratio bg-slate-100 shadow-sm">
-                    <img src={blog.mainVisual.url} alt="" class="w-full h-full object-cover" />
+    <main class="mx-auto max-w-3xl">
+        <article class="mb-16">
+            <!-- 記事ヘッダー -->
+            <header class="mb-4 pb-4">
+                <!-- カテゴリ -->
+                <div class="mb-2">
+                    {
+                        blog.category && (
+                            <a
+                                href={`/category/${blog.category.id}`}
+                                class="bg-white text-modern-charcoal px-3 py-1 rounded-full text-xs font-semibold border-2 border-modern-charcoal hover:bg-modern-blue hover:text-white transition-colors"
+                            >
+                                {blog.category.name}
+                            </a>
+                        )
+                    }
                 </div>
-            )
-        }
+                <h1
+                    class="text-2xl sm:text-3xl md:text-4xl font-extrabold text-slate-900 tracking-tight leading-tight mb-2"
+                >
+                    {blog.title}
+                </h1>
+                <div class="flex flex-wrap items-center gap-2 mb-2">
+                    {
+                        blog.tags?.map((tag) => (
+                            <a
+                                href={`/?tag=${tag.id}`}
+                                class="text-modern-charcoal text-xs font-medium hover:text-modern-red transition-colors"
+                            >
+                                #{tag.name}
+                            </a>
+                        ))
+                    }
+                </div>
+                <div class="flex items-center gap-4 text-xs sm:text-sm text-slate-500">
+                    <MetaItem iconName="mdi:calendar">
+                        <time datetime={blog.publishedAt}>{publishedAtFormatted}</time>
+                    </MetaItem>
+                    {
+                        isUpdated && (
+                            <MetaItem iconName="material-symbols:update">
+                                <time datetime={blog.updatedAt}>{updatedAtFormatted}</time>
+                            </MetaItem>
+                        )
+                    }
+                </div>
+            </header>
 
-        <div class="prose prose-slate prose-indigo sm:prose-lg max-w-none mb-12">
-            <div set:html={blog.content} />
-        </div>
-    </article>
-    <h2 class="text-2xl mb-4 text-lg font-semibold">
-        <a href={`/category/${blog.category.id}`} class="text-modern-blue">"{blog.category?.name}"</a> の最新記事
-    </h2>
+            {
+                blog.mainVisual && (
+                    <div class="mb-8 rounded-xl overflow-hidden aspect-ratio bg-slate-100 shadow-sm">
+                        <img src={blog.mainVisual.url} alt="" class="w-full h-full object-cover" />
+                    </div>
+                )
+            }
 
-    <div>
-        <ArticleList articles={relatedPosts} />
-    </div>
+            <div class="prose prose-slate prose-indigo sm:prose-lg max-w-none">
+                <div set:html={blog.content} />
+            </div>
+        </article>
+        <section class="mt-12 pt-8 border-t border-slate-900 mb-16">
+            <h2 class="text-2xl mb-4 text-lg font-semibold">
+                <a href={`/category/${blog.category.id}`} class="text-modern-blue">"{blog.category?.name}"</a> の最新記事
+            </h2>
+            <ArticleList articles={relatedPosts} />
+        </section>
+    </main>
 </Layout>
