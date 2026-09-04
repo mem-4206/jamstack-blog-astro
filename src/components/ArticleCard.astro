@@ -54,30 +54,23 @@ const articleUrl = `/${article.id}`;
                 {article.title}
             </h2>
 
-            <div class="flex flex-wrap items-center gap-y-2 gap-x-4 text-xs sm:text-sm text-slate-500 mb-3">
-                {
-                    tags.length > 0 && (
-                        <div class="flex gap-2">
-                            {tags.map((tag) => (
-                                <span class="text-slate-600">#{tag.name}</span>
-                            ))}
-                        </div>
-                    )
-                }
+            <div class="flex flex-wrap items-center gap-x-2 text-xs text-modern-charcoal line-clamp-2 mt-2 mb-4">
+                {tags.slice(0, 3).map((tag) => <span class="text-slate-600">#{tag.name}</span>)}
+                {tags.length > 3 && <span class="text-slate-400">+{tags.length - 3}</span>}
             </div>
-            <!-- 公開日と更新日 -->
-            <div class="flex items-center gap-2 text-xs text-slate-400">
-                <MetaItem iconName="mdi:calendar">
-                    <time datetime={article.publishedAt}>{publishedAtFormatted}</time>
-                </MetaItem>
-                {
-                    isUpdated && (
-                        <MetaItem iconName="material-symbols:update">
-                            <time datetime="{article.updatedAt">{updatedAtFormatted}</time>
-                        </MetaItem>
-                    )
-                }
-            </div>
+        </div>
+        <!-- 公開日と更新日 -->
+        <div class="flex items-center gap-2 text-xs text-slate-400">
+            <MetaItem iconName="mdi:calendar">
+                <time datetime={article.publishedAt}>{publishedAtFormatted}</time>
+            </MetaItem>
+            {
+                isUpdated && (
+                    <MetaItem iconName="material-symbols:update">
+                        <time datetime="{article.updatedAt">{updatedAtFormatted}</time>
+                    </MetaItem>
+                )
+            }
         </div>
     </div>
 </article>
