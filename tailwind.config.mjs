@@ -1,4 +1,4 @@
-import typography from '@tailwindcss/typography'
+import typography from "@tailwindcss/typography";
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -15,14 +15,12 @@ export default {
 				},
 			},
 			boxShadow: {
-				'solid-sm': '2px 2px 0px 0px #2B2B2A',
-				'solid': '4px 4px 0px 0px #2B2B2A',
-				'solid-lg': '8px 8px 0px 0px #2B2B2A',
-				'solid-red': '4px 4px 0px 0px #E65345',
+				"solid-sm": "2px 2px 0px 0px #2B2B2A",
+				solid: "4px 4px 0px 0px #2B2B2A",
+				"solid-lg": "8px 8px 0px 0px #2B2B2A",
+				"solid-red": "4px 4px 0px 0px #E65345",
 			},
 		},
 	},
-	plugins: [
-        typography(),
-    ],
+	plugins: [typography()],
 };

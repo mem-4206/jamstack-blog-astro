@@ -1,12 +1,12 @@
 ---
-import { Icon } from 'astro-icon/components';
+import { Icon } from "astro-icon/components";
 
 interface Props {
-    iconName?: string;
-    class?: string;
+	iconName?: string;
+	class?: string;
 }
 
-const { iconName, class: className = '' } = Astro.props;
+const { iconName, class: className = "" } = Astro.props;
 ---
 
 <div class={`inline-flex items-center gap-1 text-xs ${className}`}>
