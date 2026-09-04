@@ -1,5 +1,5 @@
 ---
-import ArticleCard from '../components/ArticleCard.astro';
+import ArticleList from '../components/ArticleList.astro';
 import MetaItem from '../components/MetaItem.astro';
 import Layout from '../layouts/Layout.astro';
 import { formatDate } from '../library/date';
@@ -29,20 +29,18 @@ const currentCategoryId = blog.category.id;
 const currentPostId = blog.id;
 
 // カテゴリが同じ記事（現在の記事以外）を取得
-const relatedPosts = allPosts.contents.filter((post) => {
-    return post.category?.id === currentCategoryId && post.id !== currentPostId;
-});
+const relatedPosts = allPosts.contents
+    .filter((post) => post.category?.id === currentCategoryId && post.id !== currentPostId)
+    .slice(0, 3);
 
 // Dateデータの整形
 const publishedAtFormatted = formatDate(blog.publishedAt);
 const updatedAtFormatted = formatDate(blog.updatedAt);
 const isUpdated = publishedAtFormatted !== updatedAtFormatted;
-
-// const tagsString = blog.tags?.map((tag) => tag.name).join(',') ?? '';
 ---
 
 <Layout title={`${blog.title}`}>
-    <article class="mx-auto max-w-3xl py-4">
+    <article class="mx-auto max-w-3xl">
         <!-- 記事ヘッダー -->
         <header class="mb-4 pb-4">
             <!-- カテゴリ -->
@@ -100,20 +98,21 @@ const isUpdated = publishedAtFormatted !== updatedAtFormatted;
         <div class="prose prose-slate prose-indigo sm:prose-lg max-w-none mb-12">
             <div set:html={blog.content} />
         </div>
-
-        <footer class="pt-8 border-t border-slate-200">
-            <a
-                href="/"
-                class="inline-flex items-center gap-2 text-sm font-medium text-slate-600 hover:text-indigo-600 transition-colors"
-            >
-                ← 記事一覧に戻る
-            </a>
-            <h2 class="text-2xl mb-4">
-                <MetaItem iconName="material-symbols:folder">{blog.category?.name}</MetaItem>
-            </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-                {relatedPosts.map((content) => <ArticleCard article={content} />)}
-            </div>
-        </footer>
     </article>
+    <h2 class="text-2xl mb-4 text-lg font-semibold">
+        <a href={`/category/${blog.category.id}`} class="text-modern-blue">"{blog.category?.name}"</a> の最新記事
+    </h2>
+
+    <!-- 実装中のエリア -->
+    <div>
+        <ArticleList articles={relatedPosts} />
+        <!-- {
+            relatedPosts.map((content) => (
+                <div class="flex gap-8">
+                    <div>{formatDate(content.publishedAt)}</div>
+                    <div>{content.title}</div>
+                </div>
+            ))
+        } -->
+    </div>
 </Layout>

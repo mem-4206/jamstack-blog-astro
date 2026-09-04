@@ -9,7 +9,7 @@ interface Props {
 const { iconName, class: className = '' } = Astro.props;
 ---
 
-<div class={`inline-flex items-center gap-1.5 text-xs sm:text-sm ${className}`}>
+<div class={`inline-flex items-center gap-1 text-xs ${className}`}>
     {
         iconName && (
             <span class="inline-flex shrink-0">

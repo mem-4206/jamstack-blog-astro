@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+// import Footer from '../components/Footer.astro';
 import Header from '../components/Header.astro';
 
 interface Props {
@@ -25,12 +26,11 @@ const { title } = Astro.props;
         <main class="flex-glow max-w-5xl w-full mx-auto px-4 sm:px-6 py-4">
             <slot />
         </main>
-        <footer class="py-6 mt-12 text-center text-xs text-slate-500">
-            <div class="max-w-5xl mx-auto px-4">
-                <p>&copy; {new Date().getFullYear()} My Blog. All rights reserved.</p>
-            </div>
-        </footer>
     </body>
+
+    <footer class="py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-5xl mx-auto px-4"><p>© 2026 My Blog. All rights reserved.</p></div>
+    <!-- </footer> -->
 </html>
 
 <style is:global>
