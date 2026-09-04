@@ -1,8 +1,13 @@
 ---
 import type { Tag } from '../library/microcms';
 
+interface TagItem {
+    id: string ;
+    name: string;
+}
+
 interface Props {
-    tags: Tag[];
+    tags: TagItem[];
 }
 
 const { tags } = Astro.props;
@@ -27,7 +32,7 @@ const { tags } = Astro.props;
                     data-tag-button={tag.id}
                     class="tag-btn"
                 >
-                    #{tag.name}
+                    {tag.name}
                 </button>
             ))
         }

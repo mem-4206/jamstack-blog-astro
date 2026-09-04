@@ -30,18 +30,23 @@ const blogsResponse = await getBlogs({
 });
 const articles = blogsResponse.contents;
 
-const tagsResponse = await getTags();
-const allTags = tagsResponse.contents;
+const categoryTags = Array.from(
+    new Map(
+        articles
+            .flatMap((article) => article.tags || [])
+            .map((tag) => [tag.id, tag])
+    ).values()
+);
 ---
 
 <Layout title={`${category.name}の記事一覧 | My Blog.`}>
-    <main class="max-w-5xl mx-auto px-4">
+    <div class="max-w-5xl mx-auto">
         <header class="mb-4 pb-4">
             <h1 class="text-2xl smm:text-3xl font-extrabold text-modern-charcoal">
                 {category.name}
             </h1>
         </header>
-        <TagFilter tags={allTags} />
+        {categoryTags.length > 0 && <TagFilter tags={categoryTags} />}
         <ArticleList articles={articles} />
-    </main>
+    </div>
 </Layout>
