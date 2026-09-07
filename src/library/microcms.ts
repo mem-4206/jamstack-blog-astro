@@ -92,15 +92,20 @@ export const getRelatedPosts = async (
 	const response = await client.getList<Blog>({
 		endpoint: "blogs",
 		queries: {
-			filters: `category[equals]'${categoryId}'`,
+			filters: `category[equals]${categoryId}`,
+			limit: 4,
 		},
 	});
+
+	console.log(response);
 
 	// 現在開いている記事の除外
 	if (currentBlogId) {
 		return {
 			...response,
-			contents: response.contents.filter((blog) => blog.id !== currentBlogId),
+			contents: response.contents
+				.filter((blog) => blog.id !== currentBlogId)
+				.slice(0, 3),
 		};
 	}
 
