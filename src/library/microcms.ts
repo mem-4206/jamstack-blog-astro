@@ -93,6 +93,7 @@ export const getRelatedPosts = async (
 		endpoint: "blogs",
 		queries: {
 			filters: `category[equals]${categoryId}`,
+			limit: 4,
 		},
 	});
 
@@ -102,7 +103,9 @@ export const getRelatedPosts = async (
 	if (currentBlogId) {
 		return {
 			...response,
-			contents: response.contents.filter((blog) => blog.id !== currentBlogId),
+			contents: response.contents
+				.filter((blog) => blog.id !== currentBlogId)
+				.slice(0, 3),
 		};
 	}
 
